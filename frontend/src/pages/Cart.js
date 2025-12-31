@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaCheck, FaTimes, FaSpinner, FaShieldAlt, FaTruck, FaTag } from 'react-icons/fa';
+import { FaArrowLeft, FaCheck, FaTimes, FaSpinner, FaShieldAlt, FaTruck, FaTag, FaUser, FaEnvelope, FaMapMarkerAlt, FaGlobeEurope, FaGoogle, FaPhone } from 'react-icons/fa';
 import './Cart.css';
 
 const Cart = () => {
@@ -11,6 +11,9 @@ const Cart = () => {
   const [discountMessage, setDiscountMessage] = useState('');
   const [orderLoading, setOrderLoading] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -101,6 +104,9 @@ const Cart = () => {
     setOrderLoading(true);
 
     try {
+      // Generar número de seguimiento simulado
+      const trackingNumber = 'CP' + Date.now().toString().slice(-8);
+      
       const orderData = {
         ...formData,
         product_name: 'PadelStats Sensor',
@@ -108,7 +114,9 @@ const Cart = () => {
         unit_price: cartData.unitPrice,
         total_amount: calculateTotal(),
         discount_code: appliedDiscount ? appliedDiscount.code : null,
-        discount_amount: calculateDiscount()
+        discount_amount: calculateDiscount(),
+        tracking_number: trackingNumber,
+        payment_method: 'contrarembolso'
       };
 
       const response = await fetch('http://localhost:8000/api/orders/create/', {
@@ -119,18 +127,38 @@ const Cart = () => {
         body: JSON.stringify(orderData),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
-        // Limpiar carrito
-        localStorage.removeItem('padelstats_cart');
-        setOrderComplete(true);
+        setOrderNumber(result.order_number || trackingNumber);
+        setShowCheckoutModal(false);
+        setShowConfirmationModal(true);
+        // Limpiar carrito después de mostrar confirmación
+        setTimeout(() => {
+          localStorage.removeItem('padelstats_cart');
+        }, 3000);
       } else {
-        throw new Error('Error al procesar el pedido');
+        throw new Error(result.error || 'Error al procesar el pedido');
       }
     } catch (error) {
-      alert('Error al procesar el pedido. Inténtalo de nuevo.');
+      alert('Error al procesar el pedido: ' + error.message);
     } finally {
       setOrderLoading(false);
     }
+  };
+
+  const handleCheckout = () => {
+    setShowCheckoutModal(true);
+  };
+
+  const closeModals = () => {
+    setShowCheckoutModal(false);
+    setShowConfirmationModal(false);
+  };
+
+  const handleGoogleFill = () => {
+    // Simular autocompletado con Google
+    alert('Función de Google Sign-In no implementada en demo. Por favor, completa el formulario manualmente.');
   };
 
   if (orderComplete) {
@@ -252,107 +280,35 @@ const Cart = () => {
 
               {/* Shipping Form */}
               <div className="shipping-form">
-                <h2 className="card-title">Información de Envío</h2>
-                
-                <form onSubmit={handleSubmit}>
-                  <div className="form-grid">
-                    <div className="form-group">
-                      <label className="form-label">Nombre completo *</label>
-                      <input
-                        type="text"
-                        name="customer_name"
-                        value={formData.customer_name}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Email *</label>
-                      <input
-                        type="email"
-                        name="customer_email"
-                        value={formData.customer_email}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Teléfono *</label>
-                      <input
-                        type="tel"
-                        name="customer_phone"
-                        value={formData.customer_phone}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">País</label>
-                      <input
-                        type="text"
-                        name="shipping_country"
-                        value={formData.shipping_country}
-                        onChange={handleInputChange}
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group full-width">
-                      <label className="form-label">Dirección de envío *</label>
-                      <textarea
-                        name="shipping_address"
-                        value={formData.shipping_address}
-                        onChange={handleInputChange}
-                        required
-                        className="form-textarea"
-                        rows="3"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Ciudad *</label>
-                      <input
-                        type="text"
-                        name="shipping_city"
-                        value={formData.shipping_city}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label className="form-label">Código postal *</label>
-                      <input
-                        type="text"
-                        name="shipping_postal_code"
-                        value={formData.shipping_postal_code}
-                        onChange={handleInputChange}
-                        required
-                        className="form-input"
-                      />
+                <h2 className="card-title">Información de Entrega</h2>
+                <div className="payment-info">
+                  <div className="payment-method">
+                    <FaShieldAlt className="payment-icon" />
+                    <div className="payment-details">
+                      <h3 className="payment-title">Pago Contrarembolso</h3>
+                      <p className="payment-description">
+                        Pagas cuando recibes el producto. Sin riesgos, sin comisiones adicionales.
+                      </p>
                     </div>
                   </div>
-
-                  <button
-                    type="submit"
-                    disabled={orderLoading}
-                    className="order-button"
-                  >
-                    {orderLoading ? (
-                      <FaSpinner className="button-icon" />
-                    ) : (
-                      <FaCheck className="button-icon" />
-                    )}
-                    {orderLoading ? 'Procesando...' : `Realizar Pedido - €${calculateTotal().toFixed(2)}`}
-                  </button>
-                </form>
+                  <div className="delivery-info">
+                    <FaTruck className="delivery-icon" />
+                    <div className="delivery-details">
+                      <h3 className="delivery-title">Entrega a domicilio</h3>
+                      <p className="delivery-description">
+                        Enviado con Correos España. Entrega en 2-4 días laborables.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={handleCheckout}
+                  className="checkout-button"
+                >
+                  <FaCheck className="button-icon" />
+                  Proceder al Checkout
+                </button>
               </div>
             </div>
 
@@ -405,6 +361,254 @@ const Cart = () => {
           </div>
         </div>
       </section>
+
+      {/* Checkout Modal */}
+      {showCheckoutModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h2 className="modal-title">Información de Entrega</h2>
+              <button onClick={closeModals} className="modal-close">
+                <FaTimes />
+              </button>
+            </div>
+
+            <div className="modal-content">
+              <div className="google-fill-container">
+                <button onClick={handleGoogleFill} className="google-fill-button">
+                  <FaGoogle className="google-icon" />
+                  Autocompletar con Google
+                </button>
+              </div>
+
+              <div className="divider">
+                <span className="divider-text">o completa manualmente</span>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="modal-form-grid">
+                  <div className="form-group">
+                    <label className="form-label">
+                      <FaUser className="label-icon" />
+                      Nombre completo *
+                    </label>
+                    <input
+                      type="text"
+                      name="customer_name"
+                      value={formData.customer_name}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="Tu nombre completo"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      <FaEnvelope className="label-icon" />
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      name="customer_email"
+                      value={formData.customer_email}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="tu@email.com"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      <FaPhone className="label-icon" />
+                      Teléfono *
+                    </label>
+                    <input
+                      type="tel"
+                      name="customer_phone"
+                      value={formData.customer_phone}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="+34 600 000 000"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      <FaGlobeEurope className="label-icon" />
+                      País
+                    </label>
+                    <select
+                      name="shipping_country"
+                      value={formData.shipping_country}
+                      onChange={handleInputChange}
+                      className="form-select"
+                    >
+                      <option value="España">España</option>
+                      <option value="Portugal">Portugal</option>
+                      <option value="Francia">Francia</option>
+                      <option value="Italia">Italia</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group full-width">
+                    <label className="form-label">
+                      <FaMapMarkerAlt className="label-icon" />
+                      Dirección de envío *
+                    </label>
+                    <input
+                      type="text"
+                      name="shipping_address"
+                      value={formData.shipping_address}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="Calle, número, piso, puerta..."
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Ciudad *</label>
+                    <input
+                      type="text"
+                      name="shipping_city"
+                      value={formData.shipping_city}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="Tu ciudad"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Código postal *</label>
+                    <input
+                      type="text"
+                      name="shipping_postal_code"
+                      value={formData.shipping_postal_code}
+                      onChange={handleInputChange}
+                      required
+                      className="form-input"
+                      placeholder="28001"
+                    />
+                  </div>
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    onClick={closeModals}
+                    className="cancel-button"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={orderLoading}
+                    className="confirm-order-button"
+                  >
+                    {orderLoading ? (
+                      <>
+                        <FaSpinner className="button-icon spinning" />
+                        Procesando...
+                      </>
+                    ) : (
+                      <>
+                        <FaCheck className="button-icon" />
+                        Confirmar Pedido - €{calculateTotal().toFixed(2)}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {showConfirmationModal && (
+        <div className="modal-overlay">
+          <div className="modal-container confirmation-modal">
+            <div className="modal-content">
+              <div className="confirmation-icon">
+                <FaCheck className="success-check" />
+              </div>
+              
+              <h2 className="confirmation-title">¡Pedido Confirmado!</h2>
+              
+              <p className="confirmation-message">
+                Tu pedido ha sido procesado correctamente. Hemos enviado todos los detalles 
+                a tu correo electrónico <strong>{formData.customer_email}</strong>.
+              </p>
+
+              <div className="confirmation-details">
+                <div className="detail-item">
+                  <span className="detail-label">Número de pedido:</span>
+                  <span className="detail-value">{orderNumber}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Número de seguimiento:</span>
+                  <span className="detail-value">{orderNumber}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Método de pago:</span>
+                  <span className="detail-value">Contrarembolso</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Tiempo de entrega:</span>
+                  <span className="detail-value">2-4 días laborables</span>
+                </div>
+              </div>
+
+              <div className="important-note">
+                <FaShieldAlt className="note-icon" />
+                <p className="note-text">
+                  <strong>¡Importante!</strong> Guarda este correo como comprobante de tu pedido. 
+                  Contiene toda la información necesaria para el seguimiento.
+                </p>
+              </div>
+
+              <div className="tracking-info">
+                <p className="tracking-text">
+                  Puedes hacer el seguimiento de tu envío en:
+                </p>
+                <a 
+                  href="https://www.correos.es/es/es/herramientas/localizador/envios"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tracking-link"
+                >
+                  🔗 Seguimiento Correos España
+                </a>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  onClick={() => {
+                    closeModals();
+                    navigate('/');
+                  }}
+                  className="go-home-button"
+                >
+                  Ir al Inicio
+                </button>
+                <button
+                  onClick={() => {
+                    closeModals();
+                    navigate('/producto');
+                  }}
+                  className="buy-more-button"
+                >
+                  Comprar más
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
