@@ -19,7 +19,7 @@ class OrderSerializer(serializers.ModelSerializer):
             'shipping_address', 'shipping_city', 'shipping_postal_code', 'shipping_country',
             'quantity', 'unit_price', 'subtotal', 'shipping_cost',
             'discount_code_text', 'discount_amount', 'total_amount',
-            'status', 'created_at'
+            'tracking_number', 'payment_method', 'status', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
 
@@ -31,8 +31,12 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         fields = [
             'customer_name', 'customer_email', 'customer_phone',
             'shipping_address', 'shipping_city', 'shipping_postal_code', 'shipping_country',
-            'quantity', 'unit_price', 'discount_code_input'
+            'quantity', 'unit_price', 'discount_code_input', 'tracking_number', 'payment_method'
         ]
+        extra_kwargs = {
+            'tracking_number': {'required': False},
+            'payment_method': {'required': False}
+        }
     
     def create(self, validated_data):
         discount_code_input = validated_data.pop('discount_code_input', '')
