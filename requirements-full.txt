@@ -1,0 +1,80 @@
+# ======================================
+# REQUIREMENTS COMPLETOS PADELSTATS WEB
+# ======================================
+# 
+# Este archivo contiene todas las dependencias necesarias
+# para ejecutar el proyecto PadelStats completo
+#
+# Instalación:
+# pip install -r requirements-full.txt
+
+# === DJANGO CORE ===
+Django==5.0.8
+djangorestframework==3.15.2
+
+# === CORS Y SEGURIDAD ===
+django-cors-headers==4.3.1
+
+# === MANEJO DE IMÁGENES ===
+Pillow==10.4.0
+
+# === VARIABLES DE ENTORNO ===
+python-dotenv==1.0.0
+
+# === AUTOMATIZACIÓN SELENIUM ===
+selenium==4.15.2
+webdriver-manager==4.0.1
+
+# === REQUESTS PARA API CALLS ===
+requests==2.31.0
+
+# === JSON WEB TOKENS (SI SE NECESITA) ===
+PyJWT==2.8.0
+
+# === TIMEZONE HANDLING ===
+pytz==2023.3
+
+# === DEVELOPMENT TOOLS ===
+# Descomenta si necesitas para desarrollo
+# django-debug-toolbar==4.2.0
+# django-extensions==3.2.3
+
+# === PRODUCTION TOOLS ===
+# Descomenta para producción
+# gunicorn==21.2.0
+# psycopg2-binary==2.9.7
+# whitenoise==6.5.0
+# django-storages==1.14.0
+# boto3==1.29.0
+
+# === TESTING ===
+# pytest==7.4.0
+# pytest-django==4.5.0
+# coverage==7.3.0
+
+# === EMAIL ENHANCEMENT ===
+# django-ses==3.5.0
+
+# === CACHING (REDIS) ===
+# redis==4.6.0
+# django-redis==5.3.0
+
+# === LOGGING ENHANCEMENT ===
+# structlog==23.1.0
+
+# === MONITORING ===
+# sentry-sdk==1.32.0
+
+# ======================================
+# COMPATIBILIDAD PYTHON
+# ======================================
+# Python >= 3.8 requerido
+# Probado con Python 3.8, 3.9, 3.10, 3.11
+
+# ======================================
+# NOTAS IMPORTANTES
+# ======================================
+# 1. ChromeDriver se instala automáticamente con webdriver-manager
+# 2. Para Gmail necesitas password de aplicación, no contraseña normal
+# 3. ePostal y PayPal requieren cuentas reales para automatización
+# 4. En producción, usar variables de entorno para credenciales

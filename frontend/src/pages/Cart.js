@@ -558,6 +558,10 @@ const Cart = () => {
                   <span className="detail-value">Contrarembolso</span>
                 </div>
                 <div className="detail-item">
+                  <span className="detail-label">Importe a pagar:</span>
+                  <span className="detail-value">€{(calculateTotal() + 5.99).toFixed(2)}</span>
+                </div>
+                <div className="detail-item">
                   <span className="detail-label">Tiempo de entrega:</span>
                   <span className="detail-value">2-4 días laborables</span>
                 </div>
@@ -566,8 +570,8 @@ const Cart = () => {
               <div className="important-note">
                 <FaShieldAlt className="note-icon" />
                 <p className="note-text">
-                  <strong>¡Importante!</strong> Guarda este correo como comprobante de tu pedido. 
-                  Contiene toda la información necesaria para el seguimiento.
+                  <strong>¡Importante!</strong> Pagarás €{(calculateTotal() + 5.99).toFixed(2)} al repartidor 
+                  (incluye €5.99 de gastos de envío). Guarda este correo como comprobante de tu pedido.
                 </p>
               </div>
 

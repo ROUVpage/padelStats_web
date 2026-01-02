@@ -2,6 +2,37 @@
 
 Una aplicación web completa para PadelStats - el sensor inteligente que se coloca en el canto de las palas de pádel para medir potencia, precisión, efecto y exigencia física.
 
+## 🚀 Instalación Rápida (Windows)
+
+```bash
+# 1. Clonar/descargar el proyecto
+git clone [URL_REPOSITORIO]
+cd padelStats_web
+
+# 2. Ejecutar instalación automática
+instalar.bat
+
+# 3. Configurar credenciales
+# Editar backend\correos_settings.py
+# Editar backend\padelstats_backend\settings.py (email)
+
+# 4. Iniciar sistema
+iniciar.bat
+
+# 5. Abrir navegador en http://localhost:3000
+```
+
+## 📖 Documentación Completa
+
+- **[INSTALACION.md](INSTALACION.md)** - Guía detallada paso a paso
+- **[TECHNICAL_DOCS.md](TECHNICAL_DOCS.md)** - Documentación técnica completa
+
+## 🛠️ Scripts Disponibles
+
+- `instalar.bat` - Instalación automática completa
+- `iniciar.bat` - Iniciar backend y frontend
+- `detener.bat` - Detener todos los servicios
+
 ## 🏗️ Estructura del Proyecto
 
 ```
