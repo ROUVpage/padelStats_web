@@ -93,7 +93,7 @@ const Cart = () => {
     setDiscountMessage('');
 
     try {
-      const response = await fetch(`http://localhost:8000/api/orders/validate-discount/`, {
+      const response = await fetch(`/api/orders/validate-discount/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ const Cart = () => {
 
       console.log('Enviando pedido:', orderData);
 
-      const response = await fetch('http://localhost:8000/api/orders/create/', {
+      const response = await fetch('/api/orders/create/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ const Cart = () => {
       }
     } catch (error) {
       console.error('Error completo:', error);
-      alert('Error al procesar el pedido: ' + error.message + '\n\nAsegúrate de que el servidor backend esté ejecutándose en http://localhost:8000/');
+      alert('Error al procesar el pedido: ' + error.message);
     } finally {
       setOrderLoading(false);
     }

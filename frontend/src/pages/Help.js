@@ -77,7 +77,7 @@ const Help = () => {
     setSubmissionStatus(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/help/contact/', {
+      const response = await fetch('/api/help/contact/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
