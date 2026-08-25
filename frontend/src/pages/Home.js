@@ -72,19 +72,19 @@ const Home = () => {
           <div className="features-grid">
             {[
               {
+                icon: '🎯',
+                title: 'Análisis Técnico',
+                description: 'Analiza todos tus golpes y movimientos en la pista'
+              },
+              {
                 icon: '⚡',
                 title: 'Medición de Potencia',
-                description: 'Analiza la fuerza de cada golpe con precisión milimétrica'
+                description: 'Analiza la fuerza y el peso aplicados en cada golpe'
               },
               {
-                icon: '🎯',
-                title: 'Precisión Tracking',
-                description: 'Rastrea la exactitud de tus golpes y mejora tu control'
-              },
-              {
-                icon: '🌪️',
-                title: 'Análisis de Efecto',
-                description: 'Mide el spin y efecto aplicado a cada pelota'
+                icon: '⚠️',
+                title: 'Prevención de Lesiones',
+                description: 'Identifica patrones de movimiento lesivos'
               },
               {
                 icon: '💪',

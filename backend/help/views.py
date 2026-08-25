@@ -18,44 +18,112 @@ class ContactSubmissionCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         contact_submission = self.perform_create(serializer)
         
-        # Enviar email
-        self.send_contact_email(contact_submission)
+        # Enviar emails
+        try:
+            self.send_admin_notification(contact_submission)
+        except Exception as e:
+            print(f"Error enviando email al admin: {e}")
+        
+        try:
+            self.send_customer_confirmation(contact_submission)
+        except Exception as e:
+            print(f"Error enviando email al cliente: {e}")
         
         return Response(
-            {"message": "Tu mensaje ha sido enviado correctamente. Te contactaremos pronto."}, 
+            {
+                "message": "Tu mensaje ha sido enviado correctamente. Te contactaremos pronto.",
+                "id": contact_submission.id
+            }, 
             status=status.HTTP_201_CREATED
         )
     
     def perform_create(self, serializer):
         return serializer.save()
     
-    def send_contact_email(self, contact_submission):
-        subject = f'Nueva Consulta PadelStats - {contact_submission.name}'
+    def send_admin_notification(self, contact):
+        """Email de notificación al admin con la consulta"""
+        subject = f'🔔 Nueva Consulta de Contacto - PadelStats'
         
         message = f"""
-NUEVA CONSULTA DE AYUDA - PADELSTATS
+¡Nueva consulta recibida! 👋
 
---- INFORMACIÓN DEL CLIENTE ---
-Nombre: {contact_submission.name}
-Email: {contact_submission.email}
 
---- MENSAJE ---
-{contact_submission.message}
+👤  DATOS DEL CLIENTE
 
---- INFORMACIÓN ADICIONAL ---
-Fecha: {contact_submission.created_at.strftime('%d/%m/%Y %H:%M')}
-ID Consulta: #{contact_submission.id}
+    Nombre: {contact.name}
+    Email: {contact.email}
+    
 
-¡Responder lo antes posible!
+📩  CONSULTA
+
+    "{contact.message}"
+    
+
+📋  INFORMACIÓN
+
+    ID: #{contact.id}
+    Fecha: {contact.created_at.strftime('%d/%m/%Y a las %H:%M')}
+    
+
+✅  ACCIÓN REQUERIDA
+
+    Responder al cliente a: {contact.email}
+    Tiempo de respuesta comprometido: 1-2 días laborables
+
+
+Sistema Automático PadelStats
         """
         
-        try:
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=['padelstats0@gmail.com'],
-                fail_silently=False,
-            )
-        except Exception as e:
-            print(f"Error enviando email de consulta: {e}")
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=['padelstats0@gmail.com'],
+            fail_silently=False,
+        )
+    
+    def send_customer_confirmation(self, contact):
+        """Email de confirmación al cliente"""
+        subject = '✅ Hemos recibido tu mensaje - PadelStats'
+        
+        message = f"""
+¡Hola {contact.name}! 👋
+
+Gracias por contactar con PadelStats. Hemos recibido tu mensaje correctamente.
+
+
+⏱️  ¿CUÁNDO RECIBIRÁS RESPUESTA?
+
+    Nuestro equipo está revisando tu consulta y te responderemos pronto.
+    
+    📧 Responderemos a: {contact.email}
+    ⏰ Tiempo de respuesta: 1-2 días laborables
+    
+    Recibirás nuestra respuesta directamente en tu email.
+    
+    Número de referencia: #{contact.id}
+
+
+💬  ¿NECESITAS MÁS AYUDA?
+
+    Mientras tanto, puedes consultar:
+    
+    🌐 Centro de ayuda: http://localhost:3000/ayuda
+    📦 Seguimiento de pedidos: https://www.correos.es
+    
+    📧 Email: padelstats0@gmail.com
+    📱 Teléfono: 691 43 29 07
+
+
+¡Gracias por tu paciencia! Pronto tendrás noticias nuestras 🎾
+
+El equipo de PadelStats
+        """
+        
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[contact.email],
+            fail_silently=False,
+        )

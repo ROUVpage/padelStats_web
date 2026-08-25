@@ -5,10 +5,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from decimal import Decimal
 import time
 from .models import DiscountCode, Order
 from .serializers import ValidateDiscountSerializer, CreateOrderSerializer, OrderSerializer
-from .correos_automation import CorreosAutomationService
 
 class ValidateDiscountView(APIView):
     def post(self, request):
@@ -38,30 +38,6 @@ class ValidateDiscountView(APIView):
 class CreateOrderView(generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = CreateOrderSerializer
-    
-    def perform_create(self, serializer):
-        order = serializer.save()
-        
-        # Intentar automatización completa de Correos España
-        if getattr(settings, 'CORREOS_AUTOMATION_ENABLED', False):
-            automation_success = self._try_correos_automation(order)
-            if not automation_success:
-                # Fallback: modo manual
-                order.status = 'requires_manual_processing'
-                order.tracking_number = f'MANUAL{order.id}-{int(time.time())}'
-                order.save()
-                self.send_manual_processing_alert(order)
-        else:
-            # Modo simulado para desarrollo
-            order.tracking_number = f'CP{int(time.time() * 1000) % 100000000:08d}'
-            order.status = 'confirmed'
-            order.save()
-        
-        # Enviar emails siempre
-        self.send_admin_email(order)
-        self.send_customer_email(order)
-        
-        return order
     
     def _try_correos_automation(self, order):
         """Intentar automatización completa de Correos España"""
@@ -207,13 +183,41 @@ Pedido creado: {order.created_at.strftime('%d/%m/%Y %H:%M')}
         return order
     
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        if response.status_code == 201:
-            # Agregar el número de pedido a la respuesta
-            order_id = response.data.get('id')
-            tracking_number = Order.objects.get(id=order_id).tracking_number
-            response.data['order_number'] = tracking_number
-        return response
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        # Crear la orden
+        order = serializer.save()
+        
+        # Generar tracking y guardar
+        order.tracking_number = f'CP{int(time.time() * 1000) % 100000000:08d}'
+        order.status = 'confirmed'
+        order.save()
+        
+        # Enviar emails
+        try:
+            self.send_admin_email(order)
+        except Exception as e:
+            print(f"Error enviando email admin: {e}")
+        
+        try:
+            self.send_customer_email(order)
+        except Exception as e:
+            print(f"Error enviando email cliente: {e}")
+        
+        # Retornar respuesta con todos los datos
+        headers = self.get_success_headers(serializer.data)
+        return Response({
+            'id': order.id,
+            'order_number': order.tracking_number,
+            'tracking_number': order.tracking_number,
+            'customer_name': order.customer_name,
+            'customer_email': order.customer_email,
+            'total_amount': str(order.total_amount),
+            'status': order.status,
+            'created_at': order.created_at.isoformat(),
+            'message': '¡Pedido creado exitosamente! Recibirás un email de confirmación.'
+        }, status=status.HTTP_201_CREATED, headers=headers)
     
     def send_admin_email(self, order):
         subject = f'Nuevo Pedido PadelStats #{order.id}'
@@ -269,76 +273,62 @@ Estado: {order.get_status_display()}
     def send_customer_email(self, order):
         subject = '✅ Confirmación de Pedido - PadelStats'
         
-        # El contrarembolso incluye precio total + gastos de envío
-        total_contrarembolso = order.total_amount + 5.99
-        
         message = f"""
-¡Hola {order.customer_name}!
+¡Hola {order.customer_name}! 👋
 
-¡Gracias por tu pedido en PadelStats! 🎾
+Tu pedido ha sido confirmado correctamente. ¡Gracias por confiar en PadelStats!
 
-Tu pedido ha sido confirmado y procesado correctamente. Aquí tienes todos los detalles:
 
---- DETALLES DE TU PEDIDO ---
-📦 Producto: {order.quantity} x PadelStats Sensor
-💰 Precio productos: €{order.total_amount}
-🚛 Gastos de envío: €5.99
-💳 TOTAL A PAGAR: €{total_contrarembolso:.2f}
-{'🎯 Descuento aplicado: ' + str(order.discount_code.discount_percentage) + '%' if order.discount_code else ''}
-{'💸 Ahorro: €' + str(order.discount_amount) if order.discount_amount > 0 else ''}
+📦  TU PEDIDO
 
---- INFORMACIÓN DE ENVÍO ---
-📍 Dirección: {order.shipping_address}
-🏙️ Ciudad: {order.shipping_city}, {order.shipping_postal_code}
-🌍 País: {order.shipping_country}
+    Producto: {order.quantity} x PadelStats Sensor
+    Precio unitario: €{order.unit_price}
+    {'Descuento aplicado: -' + str(order.discount_code.discount_percentage) + '% (ahorras €' + str(order.discount_amount) + ')' if order.discount_code else ''}
+    Gastos de envío: €{order.shipping_cost}
+    
+    💰 TOTAL A PAGAR: €{order.total_amount}
+    💳 Método de pago: Contrarembolso (pagas al recibir)
 
---- INFORMACIÓN IMPORTANTE ---
-🏷️ Número de pedido: #{order.id}
-📋 Número de seguimiento: {order.tracking_number}
-💰 Método de pago: Contrarembolso (pagas al recibir)
-💶 Importe exacto a pagar: €{total_contrarembolso:.2f}
-⏰ Tiempo de entrega: 2-4 días laborables
-📅 Fecha del pedido: {order.created_at.strftime('%d/%m/%Y %H:%M')}
 
---- SEGUIMIENTO DEL ENVÍO ---
-Tu pedido será enviado a través de Correos España.
-Puedes hacer seguimiento en: https://www.correos.es/es/es/herramientas/localizador/envios
+🚚  INFORMACIÓN DE ENVÍO
 
-Usa tu número de seguimiento: {order.tracking_number}
+    Dirección de entrega:
+    {order.shipping_address}
+    {order.shipping_city}, {order.shipping_postal_code}
+    {order.shipping_country}
+    
+    📅 Tiempo estimado: 2-4 días laborables
+    📦 Transportista: Correos España
+    
+    ⚠️  Importante: El repartidor te pedirá €{order.total_amount} en efectivo
+         al momento de la entrega. Ten preparado el importe exacto.
 
---- ⚠️ ¡MUY IMPORTANTE! ⚠️ ---
-🔹 GUARDA ESTE CORREO como comprobante de tu pedido
-🔹 Es tu VALIDACIÓN oficial de compra
-🔹 Lo necesitarás para garantía y soporte
-🔹 Pagarás al repartidor cuando recibas el producto
-🔹 Ten preparado el importe exacto: €{total_contrarembolso:.2f}
 
---- PRÓXIMOS PASOS ---
-1. 📧 Hemos registrado tu pedido en nuestro sistema
-2. 📦 Preparamos y enviamos tu PadelStats (2kg, 22x10x4cm)
-3. 🚛 Correos España gestiona la entrega contrarembolso
-4. 📱 Recibirás SMS con fecha aproximada de entrega
-5. 🏠 El repartidor entregará en tu domicilio
-6. 💰 Pagas €{total_contrarembolso:.2f} en ese momento
+📱  SEGUIMIENTO DE TU ENVÍO
 
---- ESPECIFICACIONES DEL PRODUCTO ---
-⚖️ Peso: 2kg
-📏 Dimensiones: 22 x 10 x 4 cm
-📱 App incluida: PadelStats (iOS/Android)
-🔋 Batería: 4h 30min uso continuo
-🛡️ Garantía: 2 años
+    Número de seguimiento: {order.tracking_number}
+    
+    Puedes rastrear tu paquete en cualquier momento:
+    🔗 https://www.correos.es/es/es/herramientas/localizador/envios
+    
+    Introduce tu número de seguimiento y verás dónde está tu pedido.
+    También recibirás un SMS de Correos cuando esté cerca de tu domicilio.
 
-¿Tienes alguna pregunta? Contáctanos:
-📧 Email: padelstats0@gmail.com
-📱 Responde a este correo
-🌐 Visita: www.padelstats.com/ayuda
 
-¡Gracias por elegir PadelStats! 
-Pronto estarás midiendo y mejorando tu juego como nunca antes 🚀
+💬  ¿TIENES ALGUNA DUDA?
 
----
+    Estamos aquí para ayudarte:
+    
+    📧 Email: padelstats0@gmail.com
+    📱 Teléfono: 691 43 29 07
+    🌐 Centro de ayuda: http://localhost:3000/ayuda
+    
+    ⏱️ Tiempo de respuesta: 1-2 días laborables
+
+
+¡Gracias por tu compra! Pronto estarás mejorando tu juego con PadelStats 🎾🚀
+
 El equipo de PadelStats
-www.padelstats.com
         """
         
         try:

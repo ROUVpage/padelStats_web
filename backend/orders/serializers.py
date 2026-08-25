@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from decimal import Decimal
 from .models import DiscountCode, Order
 
 class DiscountCodeSerializer(serializers.ModelSerializer):
@@ -44,12 +45,12 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         unit_price = validated_data['unit_price']
         
         # Calcular subtotal
-        subtotal = quantity * unit_price
-        shipping_cost = 5.99
+        subtotal = Decimal(str(quantity)) * Decimal(str(unit_price))
+        shipping_cost = Decimal('5.99')
         
         # Procesar código de descuento
         discount_code = None
-        discount_amount = 0
+        discount_amount = Decimal('0')
         
         if discount_code_input:
             try:
@@ -58,7 +59,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
                     is_active=True
                 )
                 if discount_code.is_valid:
-                    discount_amount = subtotal * (discount_code.discount_percentage / 100)
+                    discount_amount = subtotal * (Decimal(str(discount_code.discount_percentage)) / Decimal('100'))
                     discount_code.used_count += 1
                     discount_code.save()
             except DiscountCode.DoesNotExist:

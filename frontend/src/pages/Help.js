@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaUser, FaQuestionCircle, FaChevronDown, FaChevronUp, FaMobile, FaBluetooth, FaBatteryFull, FaShieldAlt, FaPaperPlane, FaCheck } from 'react-icons/fa';
+import { FaQuestionCircle, FaChevronDown, FaChevronUp, FaMobile, FaBluetooth, FaBatteryFull, FaShieldAlt, FaPaperPlane, FaCheck } from 'react-icons/fa';
 import './Help.css';
 
 const Help = () => {
@@ -121,33 +121,6 @@ const Help = () => {
       {/* Quick Help Cards */}
       <section className="help-main">
         <div className="help-main-container">
-          <div className="quick-help">
-            <h2 className="section-title">Ayuda Rápida</h2>
-            <div className="quick-help-grid">
-              <div className="help-card">
-                <FaMobile className="help-card-icon" />
-                <h3 className="help-card-title">Descarga la App</h3>
-                <p className="help-card-description">
-                  Disponible gratis en Play Store y App Store
-                </p>
-              </div>
-              <div className="help-card">
-                <FaBluetooth className="help-card-icon" />
-                <h3 className="help-card-title">Conectar Sensor</h3>
-                <p className="help-card-description">
-                  Guía paso a paso para emparejar tu dispositivo
-                </p>
-              </div>
-              <div className="help-card">
-                <FaQuestionCircle className="help-card-icon" />
-                <h3 className="help-card-title">Soporte 24/7</h3>
-                <p className="help-card-description">
-                  Estamos aquí para ayudarte en todo momento
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Main Help Sections */}
           <div className="help-sections">
             {/* FAQ Section */}
@@ -270,6 +243,34 @@ const Help = () => {
                   )}
                 </button>
               </form>
+            </div>
+          </div>
+
+          {/* Quick Help Section - Al Final */}
+          <div className="quick-help">
+            <h2 className="section-title">Ayuda Rápida</h2>
+            <div className="quick-help-grid">
+              <div className="help-card">
+                <FaMobile className="help-card-icon" />
+                <h3 className="help-card-title">Descarga la App</h3>
+                <p className="help-card-description">
+                  Disponible gratis en Play Store y App Store
+                </p>
+              </div>
+              <div className="help-card">
+                <FaBluetooth className="help-card-icon" />
+                <h3 className="help-card-title">Conectar Sensor</h3>
+                <p className="help-card-description">
+                  Guía paso a paso para emparejar tu dispositivo
+                </p>
+              </div>
+              <div className="help-card">
+                <FaQuestionCircle className="help-card-icon" />
+                <h3 className="help-card-title">Soporte 24/7</h3>
+                <p className="help-card-description">
+                  Estamos aquí para ayudarte en todo momento
+                </p>
+              </div>
             </div>
           </div>
         </div>

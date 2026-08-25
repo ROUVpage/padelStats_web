@@ -1,50 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaCheck, FaBatteryFull, FaWifi, FaShieldAlt, FaMobile, FaShoppingCart } from 'react-icons/fa';
 import './Product.css';
 
 const Product = () => {
   const [selectedTab, setSelectedTab] = useState('features');
   const [quantity, setQuantity] = useState(1);
-  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [quantityError, setQuantityError] = useState(null);
+  const [visibleFeatures, setVisibleFeatures] = useState({});
+  const [allowReveal, setAllowReveal] = useState(true);
   const navigate = useNavigate();
 
-  // Efecto para ciclar automáticamente entre características
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentFeatureIndex((prev) => (prev + 1) % features.length);
-        setIsTransitioning(false);
-      }, 800); // Tiempo para que desaparezca completamente
-    }, 4000); // Cambia cada 4 segundos
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const calculatePrice = () => {
-    if (quantity >= 4) {
-      return 49.99 * quantity;
-    }
-    return 59.99 * quantity;
-  };
-
-  const calculateOriginalPrice = () => {
-    return 84.99 * quantity;
-  };
-
-  const goToCart = () => {
-    // Guardar datos del carrito en localStorage
-    const cartData = {
-      quantity: quantity,
-      unitPrice: quantity >= 4 ? 49.99 : 59.99,
-      originalPrice: 84.99
-    };
-    localStorage.setItem('padelstats_cart', JSON.stringify(cartData));
-    navigate('/carrito');
-  };
-
+  // Características del producto (debe declararse antes de usarse en cálculos)
   const features = [
     {
       title: 'Medición de Potencia',
@@ -52,27 +19,7 @@ const Product = () => {
       details: [
         'Rango de medición: 0-130 km/h',
         'Precisión: ±2%',
-        'Frecuencia de muestreo: 1000Hz'
-      ],
-      image: '' // URL de imagen a rellenar
-    },
-    {
-      title: 'Análisis de Precisión',
-      description: 'Rastrea la exactitud de tus golpes y mejora tu control. El sistema detecta la zona de impacto y calcula desviaciones del punto óptimo.',
-      details: [
-        'Detección de zona de golpe',
-        'Análisis de consistencia',
-        'Métricas de control de pala'
-      ],
-      image: '' // URL de imagen a rellenar
-    },
-    {
-      title: 'Medición de Efecto',
-      description: 'Analiza el spin aplicado a cada pelota, incluyendo efecto liftado, cortado y lateral. Perfecciona tu técnica con datos precisos del giro de la pelota.',
-      details: [
-        'Detección de spin rate (rpm)',
-        'Análisis de efectos complejos',
-        'Diferenciación entre liftado, cortado y lateral'
+        'Unidad de medida: Newtons (N)'
       ],
       image: '' // URL de imagen a rellenar
     },
@@ -100,9 +47,9 @@ const Product = () => {
       title: 'Exigencia Física',
       description: 'Monitorea tu desgaste físico durante el juego. Controla la intensidad de cada golpe y optimiza tu rendimiento a lo largo del partido.',
       details: [
-        'Exigencia cardiovascular por golpe',
-        'Fuerza muscular aplicada',
-        'Indicador de fatiga y riesgo de lesión'
+        'Exigencia muscular por golpe',
+        'Gráfico interactivo del desgaste físico',
+        'Consejos para la recuperación específicos para ti'
       ],
       image: '' // URL de imagen a rellenar
     },
@@ -110,9 +57,9 @@ const Product = () => {
       title: 'Punto de Impacto',
       description: 'Identifica el punto exacto donde la pelota golpea la pala, ayudándote a encontrar y mantener el punto dulce para mayor control.',
       details: [
-        'Localización precisa del impacto',
+        'Mejora tu precisión en cada golpe',
         'Punto dulce de tu pala',
-        'Golpeo limpio de la pelota'
+        'Impacto limpio de la pelota'
       ],
       image: '' // URL de imagen a rellenar
     },
@@ -120,39 +67,107 @@ const Product = () => {
       title: 'Clasificación de Cada Golpe',
       description: 'Identifica automáticamente el tipo de golpe ejecutado: drive, revés, voleas, remates, bandejas y dejadas con análisis individual.',
       details: [
-        'Reconocimiento automático de golpe',
-        'Estadísticas por tipo de golpe',
-        'Análisis de patrones de juego'
+        'Detección automática de cada golpe',
+        'Análisis de patrones de movimiento',
+        'Clasificación de cada golpe'        
       ],
       image: '' // URL de imagen a rellenar
     },
     {
-      title: 'Medición de Posibles Lesiones',
+      title: 'Prevención de Lesiones',
       description: 'Sistema avanzado de detección y prevención de lesiones que analiza patrones de movimiento y estrés articular en tiempo real.',
       details: [
         'Detección de movimientos de riesgo',
         'Análisis de sobrecarga articular',
-        'Alertas de prevención de lesiones'
+        'Consejos para prevenir las lesiones'
+      ],
+      image: '' // URL de imagen a rellenar
+    },
+    {
+      title: 'Medición de Efecto',
+      description: 'Analiza el spin aplicado a cada pelota, incluyendo efecto liftado, cortado y lateral. Perfecciona tu técnica con datos precisos del giro de la pelota.',
+      details: [
+        'Detección de la velocidad de rotación',
+        'Análisis de efectos complejos',
+        'Diferenciación entre liftado, cortado y lateral'
       ],
       image: '' // URL de imagen a rellenar
     }
   ];
+
+  // Revelar características progresivamente al hacer scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!allowReveal) return;
+        entries.forEach((entry) => {
+          const index = entry.target.getAttribute('data-index');
+          if (entry.isIntersecting) {
+            setVisibleFeatures((prev) => ({ ...prev, [index]: true }));
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const nodes = document.querySelectorAll('.feature-block');
+    nodes.forEach((node) => observer.observe(node));
+
+    return () => {
+      nodes.forEach((node) => observer.unobserve(node));
+    };
+  }, [allowReveal, features.length]);
+
+  const allVisible = features.every((_, idx) => visibleFeatures[idx]);
+  const collapseFeatures = () => {
+    setAllowReveal(false);
+    setVisibleFeatures({ 0: true });
+  };
+
+  const expandFeatures = () => {
+    setAllowReveal(true);
+    setVisibleFeatures({ 0: true });
+  };
+
+  const calculatePrice = () => {
+    if (quantity >= 4) {
+      return 49.99 * quantity;
+    }
+    return 59.99 * quantity;
+  };
+
+  const calculateOriginalPrice = () => {
+    return 84.99 * quantity;
+  };
+
+  const goToCart = () => {
+    // Guardar datos del carrito en localStorage
+    const cartData = {
+      quantity: quantity,
+      unitPrice: quantity >= 4 ? 49.99 : 59.99,
+      originalPrice: 84.99
+    };
+    localStorage.setItem('padelstats_cart', JSON.stringify(cartData));
+    navigate('/carrito');
+  };
 
   const specifications = [
     { label: 'Duración de batería', value: '4h 30min', icon: <FaBatteryFull /> },
     { label: 'Conectividad', value: 'Bluetooth 5.0', icon: <FaWifi /> },
     { label: 'Resistencia', value: 'IPX7 - Muy duradera', icon: <FaShieldAlt /> },
     { label: 'Peso', value: '12g', icon: '⚖️' },
-    { label: 'Dimensiones', value: '4x2x1 cm', icon: '📐' },
-    { label: 'Material', value: 'Fibra de plástico reforzado', icon: '🧱' },
+    { label: 'Dimensiones', value: '4x2x1 cm', icon: '📏' },
+    { label: 'Material', value: 'Policarbonato', icon: '🛡️' },
     { label: 'App móvil', value: 'iOS/Android gratuita', icon: <FaMobile /> },
-    { label: 'Memoria', value: '500 partidos', icon: '💾' }
+    { label: 'Memoria', value: '250 partidos', icon: '🧠' }
   ];
+
+  const renderedFeatures = allowReveal ? features : features.slice(0, 1);
 
   return (
     <div className="product-container">
       {/* Interactive Features Section - Moved to Top */}
-      <section className="features-section">
+      <section className="features-section" id="features-section">
         <div className="features-container">
           <div className="features-header">
             <h2 className="features-title">
@@ -163,63 +178,55 @@ const Product = () => {
             </p>
           </div>
           
-          {/* Interactive Feature Display */}
-          <div className="features-card">
-            <div className={`feature-content ${
-              isTransitioning ? 'transitioning' : 'visible'
-            }`}>
-              <div className="feature-grid">
-                <div>
+          {/* Vertical feature stack with entrada/salida suave */}
+          <div className="features-stack">
+            {renderedFeatures.map((feature, index) => (
+              <div
+                key={feature.title}
+                data-index={index}
+                className={`feature-block ${visibleFeatures[index] ? 'visible' : ''}`}
+              >
+                <div className="feature-block-grid">
                   <div className="feature-image-container">
-                    {features[currentFeatureIndex].image ? (
-                      <img 
-                        src={features[currentFeatureIndex].image} 
-                        alt={features[currentFeatureIndex].title}
+                    {feature.image ? (
+                      <img
+                        src={feature.image}
+                        alt={feature.title}
                         className="feature-image"
                       />
                     ) : (
-                      <span className="feature-image-placeholder">Imagen {features[currentFeatureIndex].title}</span>
+                      <span className="feature-image-placeholder">Imagen {feature.title}</span>
                     )}
                   </div>
-                </div>
-                <div>
-                  <h3 className="feature-title">
-                    {features[currentFeatureIndex].title}
-                  </h3>
-                  <p className="feature-description">
-                    {features[currentFeatureIndex].description}
-                  </p>
-                  <ul className="feature-details">
-                    {features[currentFeatureIndex].details.map((detail, idx) => (
-                      <li key={idx} className="feature-detail-item">
-                        <FaCheck className="feature-check-icon" />
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
+                  <div>
+                    <div className="feature-block-header">
+                      <span className="feature-index">{String(index + 1).padStart(2, '0')}</span>
+                      <h3 className="feature-title">{feature.title}</h3>
+                    </div>
+                    <p className="feature-description">{feature.description}</p>
+                    <ul className="feature-details">
+                      {feature.details.map((detail, idx) => (
+                        <li key={idx} className="feature-detail-item">
+                          <FaCheck className="feature-check-icon" />
+                          {detail}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Feature Navigation Dots */}
-            <div className="navigation-dots">
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    if (index !== currentFeatureIndex) {
-                      setIsTransitioning(true);
-                      setTimeout(() => {
-                        setCurrentFeatureIndex(index);
-                        setIsTransitioning(false);
-                      }, 800);
-                    }
-                  }}
-                  className={`nav-dot ${
-                    index === currentFeatureIndex ? 'active' : ''
-                  }`}
-                />
-              ))}
+            ))}
+            <div className="features-actions">
+              {allowReveal && allVisible ? (
+                <button className="feature-button secondary" onClick={collapseFeatures}>
+                  Ver menos
+                </button>
+              ) : null}
+              {!allowReveal ? (
+                <button className="feature-button" onClick={expandFeatures}>
+                  Ver más características
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
@@ -262,16 +269,36 @@ const Product = () => {
                   </div>
                   <div className="quantity-selector">
                     <label className="quantity-label">Cantidad:</label>
-                    <select
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
                       value={quantity}
-                      onChange={(e) => setQuantity(parseInt(e.target.value))}
-                      className="quantity-select"
-                    >
-                      {[1, 2, 3, 4, 5, 6].map(num => (
-                        <option key={num} value={num}>{num}</option>
-                      ))}
-                    </select>
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) || 1;
+                        if (value > 0) {
+                          setQuantity(value);
+                          setQuantityError(null);
+                        } else {
+                          setQuantityError(true);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const value = parseInt(e.target.value) || 1;
+                        if (value <= 0) {
+                          setQuantityError(true);
+                          setQuantity(1);
+                        }
+                      }}
+                      className="quantity-input"
+                    />
                   </div>
+                  {quantityError && (
+                    <div className="quantity-error">
+                      <p>El valor no es válido. Por favor, ingresa un número válido.</p>
+                      <a href="/ayuda" className="error-help-link">¿Necesitas ayuda? Pulsa aquí</a>
+                    </div>
+                  )}
                 </div>
                 <button 
                   onClick={goToCart}

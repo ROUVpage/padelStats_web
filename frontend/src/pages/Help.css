@@ -254,17 +254,19 @@
 .success-message {
   background: #064e3b;
   color: #a7f3d0;
-  padding: 1rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   border: 1px solid #065f46;
   display: flex;
   align-items: center;
+  font-size: 0.875rem;
 }
 
 .success-icon {
   color: #10b981;
   margin-right: 0.5rem;
+  font-size: 0.875rem;
 }
 
 /* Loading States */

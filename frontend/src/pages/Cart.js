@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaCheck, FaTimes, FaSpinner, FaShieldAlt, FaTruck, FaTag, FaUser, FaEnvelope, FaMapMarkerAlt, FaGlobeEurope, FaGoogle, FaPhone } from 'react-icons/fa';
+import { FaArrowLeft, FaCheck, FaTimes, FaSpinner, FaShieldAlt, FaTruck, FaTag, FaUser, FaEnvelope, FaMapMarkerAlt, FaGlobeEurope, FaPhone, FaGoogle } from 'react-icons/fa';
 import './Cart.css';
 
 const Cart = () => {
@@ -36,6 +36,35 @@ const Cart = () => {
       navigate('/producto');
     }
   }, [navigate]);
+
+  // Efecto separado para inicializar Google Sign-In cuando el modal se abre
+  useEffect(() => {
+    if (showCheckoutModal && window.google) {
+      // Pequeño delay para asegurar que el DOM está listo
+      setTimeout(() => {
+        const buttonDiv = document.getElementById('google-signin-button');
+        if (buttonDiv) {
+          window.google.accounts.id.initialize({
+            client_id: '69673734152-t1vm99a2ktqp92qsf233hddffe4dovjp.apps.googleusercontent.com',
+            callback: handleGoogleResponse,
+            auto_select: false,
+          });
+          
+          // Renderizar el botón oficial de Google
+          window.google.accounts.id.renderButton(
+            buttonDiv,
+            { 
+              theme: 'filled_blue',
+              size: 'large',
+              text: 'signin_with',
+              width: 350,
+              locale: 'es'
+            }
+          );
+        }
+      }, 100);
+    }
+  }, [showCheckoutModal]);
 
   const calculateSubtotal = () => {
     if (!cartData) return 0;
@@ -99,6 +128,32 @@ const Cart = () => {
     }));
   };
 
+  const handleGoogleResponse = (response) => {
+    try {
+      // Decodificar el JWT token para obtener la info del usuario
+      const userInfo = JSON.parse(atob(response.credential.split('.')[1]));
+      
+      // Autorellenar el formulario con todos los datos disponibles de Google
+      setFormData(prev => ({
+        ...prev,
+        customer_name: userInfo.name || prev.customer_name,
+        customer_email: userInfo.email || prev.customer_email,
+        customer_phone: userInfo.phone_number || prev.customer_phone,
+        shipping_address: userInfo.address?.street_address || prev.shipping_address,
+        shipping_city: userInfo.address?.locality || prev.shipping_city,
+        shipping_postal_code: userInfo.address?.postal_code || prev.shipping_postal_code,
+        shipping_country: userInfo.address?.country || prev.shipping_country,
+      }));
+    } catch (error) {
+      console.error('Error procesando respuesta de Google:', error);
+    }
+  };
+
+  const handleGoogleAutofill = () => {
+    // Esta función ya no es necesaria porque el botón se renderiza automáticamente
+    // Se mantiene por compatibilidad pero no hace nada
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setOrderLoading(true);
@@ -119,6 +174,8 @@ const Cart = () => {
         payment_method: 'contrarembolso'
       };
 
+      console.log('Enviando pedido:', orderData);
+
       const response = await fetch('http://localhost:8000/api/orders/create/', {
         method: 'POST',
         headers: {
@@ -127,10 +184,19 @@ const Cart = () => {
         body: JSON.stringify(orderData),
       });
 
-      const result = await response.json();
+      console.log('Respuesta del servidor:', response.status);
 
-      if (response.ok) {
-        setOrderNumber(result.order_number || trackingNumber);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error del servidor:', errorText);
+        throw new Error(`Error del servidor (${response.status}). Por favor, verifica que el backend esté ejecutándose.`);
+      }
+
+      const result = await response.json();
+      console.log('Resultado:', result);
+
+      if (result.id || result.order_number) {
+        setOrderNumber(result.order_number || result.tracking_number || trackingNumber);
         setShowCheckoutModal(false);
         setShowConfirmationModal(true);
         // Limpiar carrito después de mostrar confirmación
@@ -141,7 +207,8 @@ const Cart = () => {
         throw new Error(result.error || 'Error al procesar el pedido');
       }
     } catch (error) {
-      alert('Error al procesar el pedido: ' + error.message);
+      console.error('Error completo:', error);
+      alert('Error al procesar el pedido: ' + error.message + '\n\nAsegúrate de que el servidor backend esté ejecutándose en http://localhost:8000/');
     } finally {
       setOrderLoading(false);
     }
@@ -154,11 +221,6 @@ const Cart = () => {
   const closeModals = () => {
     setShowCheckoutModal(false);
     setShowConfirmationModal(false);
-  };
-
-  const handleGoogleFill = () => {
-    // Simular autocompletado con Google
-    alert('Función de Google Sign-In no implementada en demo. Por favor, completa el formulario manualmente.');
   };
 
   if (orderComplete) {
@@ -374,15 +436,12 @@ const Cart = () => {
             </div>
 
             <div className="modal-content">
-              <div className="google-fill-container">
-                <button onClick={handleGoogleFill} className="google-fill-button">
-                  <FaGoogle className="google-icon" />
-                  Autocompletar con Google
-                </button>
-              </div>
-
-              <div className="divider">
-                <span className="divider-text">o completa manualmente</span>
+              {/* Google Sign-In Button */}
+              <div className="autofill-section">
+                <div id="google-signin-button" style={{ display: 'flex', justifyContent: 'center' }}></div>
+                <p className="autofill-hint">
+                  Inicia sesión para autocompletar tu nombre y email
+                </p>
               </div>
 
               <form onSubmit={handleSubmit}>
@@ -400,6 +459,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="Tu nombre completo"
+                      autoComplete="name"
                     />
                   </div>
 
@@ -416,6 +476,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="tu@email.com"
+                      autoComplete="email"
                     />
                   </div>
 
@@ -432,6 +493,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="+34 600 000 000"
+                      autoComplete="tel"
                     />
                   </div>
 
@@ -445,6 +507,7 @@ const Cart = () => {
                       value={formData.shipping_country}
                       onChange={handleInputChange}
                       className="form-select"
+                      autoComplete="country-name"
                     >
                       <option value="España">España</option>
                       <option value="Portugal">Portugal</option>
@@ -466,6 +529,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="Calle, número, piso, puerta..."
+                      autoComplete="street-address"
                     />
                   </div>
 
@@ -479,6 +543,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="Tu ciudad"
+                      autoComplete="address-level2"
                     />
                   </div>
 
@@ -492,6 +557,7 @@ const Cart = () => {
                       required
                       className="form-input"
                       placeholder="28001"
+                      autoComplete="postal-code"
                     />
                   </div>
                 </div>
@@ -559,7 +625,7 @@ const Cart = () => {
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Importe a pagar:</span>
-                  <span className="detail-value">€{(calculateTotal() + 5.99).toFixed(2)}</span>
+                  <span className="detail-value">€{calculateTotal().toFixed(2)}</span>
                 </div>
                 <div className="detail-item">
                   <span className="detail-label">Tiempo de entrega:</span>
@@ -570,7 +636,7 @@ const Cart = () => {
               <div className="important-note">
                 <FaShieldAlt className="note-icon" />
                 <p className="note-text">
-                  <strong>¡Importante!</strong> Pagarás €{(calculateTotal() + 5.99).toFixed(2)} al repartidor 
+                  <strong>¡Importante!</strong> Pagarás €{calculateTotal().toFixed(2)} al repartidor 
                   (incluye €5.99 de gastos de envío). Guarda este correo como comprobante de tu pedido.
                 </p>
               </div>

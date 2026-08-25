@@ -629,6 +629,47 @@
   padding: 2rem;
 }
 
+/* Autofill Section */
+.autofill-section {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.google-autofill-button {
+  background: linear-gradient(145deg, #4285f4, #3367d6);
+  color: #ffffff;
+  padding: 0.875rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.google-autofill-button:hover {
+  background: linear-gradient(145deg, #3367d6, #2851c7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+}
+
+.google-icon {
+  margin-right: 0.75rem;
+  font-size: 1.125rem;
+}
+
+.autofill-hint {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
 /* Google Fill Button */
 .google-fill-container {
   margin-bottom: 1.5rem;
