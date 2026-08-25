@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaPlay, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { FaPlay, FaArrowRight, FaCheck, FaTimes } from 'react-icons/fa';
 import './Home.css';
 
 const Home = () => {
+  const [demoOpen, setDemoOpen] = useState(false);
   return (
     <div className="home-container">
       {/* Hero Section */}
@@ -25,7 +26,7 @@ const Home = () => {
                   Ver Producto
                   <FaArrowRight className="button-icon" />
                 </Link>
-                <button className="secondary-button">
+                <button className="secondary-button" onClick={() => setDemoOpen(true)}>
                   <FaPlay className="button-icon-left" />
                   Ver Demo
                 </button>
@@ -171,6 +172,16 @@ const Home = () => {
           </Link>
         </div>
       </section>
+      {demoOpen && (
+        <div className="demo-overlay" onClick={() => setDemoOpen(false)}>
+          <div className="demo-modal" onClick={e => e.stopPropagation()}>
+            <button className="demo-close" onClick={() => setDemoOpen(false)}>
+              <FaTimes />
+            </button>
+            <img src="/demo-app.png" alt="Demo PadelStats" className="demo-image" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

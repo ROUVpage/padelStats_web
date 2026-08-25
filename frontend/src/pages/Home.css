@@ -503,3 +503,53 @@
     margin-top: 2rem;
   }
 }
+
+/* Demo Modal */
+.demo-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.demo-modal {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+}
+
+.demo-image {
+  display: block;
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+.demo-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: #ffffff;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.demo-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
