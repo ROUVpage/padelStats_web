@@ -360,19 +360,6 @@ const Product = () => {
                 {features.map((feature, index) => (
                   <div key={index} className="feature-card">
                     <div className="feature-card-content">
-                      <div className="feature-icon-container">
-                        {feature.image ? (
-                          <img 
-                            src={feature.image} 
-                            alt={feature.title}
-                            className="feature-icon-image"
-                          />
-                        ) : (
-                          <div className="feature-icon-placeholder">
-                            <span className="feature-icon-text">Img</span>
-                          </div>
-                        )}
-                      </div>
                       <div className="flex-1">
                         <h4 className="feature-card-title">
                           {feature.title}
