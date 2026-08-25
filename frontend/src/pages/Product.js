@@ -227,7 +227,7 @@ const Product = () => {
           <div className="product-hero-grid">
             <div>
               <div className="product-image-container" style={{overflow:'hidden',padding:0}}>
-                <img src="/demo-app.png" alt="PadelStats Sensor" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'left center',transform:'scale(1.25)',transformOrigin:'right center',display:'block'}} />
+                <img src="/demo-app.png" alt="PadelStats Sensor" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'60% center',transform:'scale(1.25)',transformOrigin:'left center',display:'block'}} />
               </div>
             </div>
             <div>
