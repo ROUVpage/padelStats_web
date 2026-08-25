@@ -47,7 +47,7 @@ const Blog = () => {
       title: 'Entrenamiento con datos: La revolución del pádel',
       slug: 'entrenamiento-datos-revolucion-padel',
       excerpt: 'El entrenamiento basado en datos está transformando el pádel. Descubre cómo los sensores inteligentes como PadelStats están cambiando la forma de entrenar y competir.',
-      featured_image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&h=450&fit=crop&auto=format',
+      featured_image: 'https://www.entrenamiento.com/wp-content/uploads/2018/03/rutina-entrenamiento-peso.jpg',
       author: 'PadelStats Team',
       category: 'Tecnología',
       created_at: '2024-01-05T16:45:00Z',

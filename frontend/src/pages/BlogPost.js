@@ -301,7 +301,7 @@ const BlogPost = () => {
         <p>El pádel con datos no es el futuro: es el presente. Y la buena noticia es que nunca ha sido tan accesible.</p>
       `,
       excerpt: 'El entrenamiento basado en datos está transformando el pádel. Descubre cómo los sensores inteligentes como PadelStats están cambiando la forma de entrenar.',
-      featured_image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://www.entrenamiento.com/wp-content/uploads/2018/03/rutina-entrenamiento-peso.jpg',
       author: 'PadelStats Team',
       created_at: '2024-01-05T16:45:00Z',
       views: 0
