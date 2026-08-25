@@ -7,6 +7,8 @@ const BlogPost = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
 
   // Datos de ejemplo para artículos completos
   const samplePosts = {
@@ -553,16 +555,27 @@ const BlogPost = () => {
             Suscríbete para recibir más consejos y análisis de pádel
           </p>
           <div className="max-w-md mx-auto">
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Tu email"
-                className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:outline-none focus:ring-2 focus:ring-primary-300"
-              />
-              <button className="bg-accent-500 text-white px-6 py-3 rounded-r-lg font-semibold hover:bg-accent-600 transition-colors">
-                Suscribirse
-              </button>
-            </div>
+            {subscribed ? (
+              <div style={{background:'rgba(255,255,255,0.15)',borderRadius:'0.75rem',padding:'1.25rem',color:'#ffffff',fontWeight:600,fontSize:'1.1rem'}}>
+                🎾 ¡Muchas gracias por registrarte! Pronto recibirás nuestros consejos.
+              </div>
+            ) : (
+              <div className="flex">
+                <input
+                  type="email"
+                  value={subscribeEmail}
+                  onChange={e => setSubscribeEmail(e.target.value)}
+                  placeholder="Tu email"
+                  className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:outline-none focus:ring-2 focus:ring-primary-300"
+                />
+                <button
+                  onClick={() => { if (subscribeEmail) setSubscribed(true); }}
+                  className="bg-accent-500 text-white px-6 py-3 rounded-r-lg font-semibold hover:bg-accent-600 transition-colors"
+                >
+                  Suscribirse
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
