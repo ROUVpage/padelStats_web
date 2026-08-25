@@ -34,8 +34,11 @@ const Home = () => {
             <div className="product-showcase">
               <div className="product-card">
                 <div className="product-main-card">
-                  <div className="product-image">
-                    <img src="/pcb-padelstats.jpg" alt="PadelStats PCB" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'0.5rem'}} />
+                  <div className="product-image" style={{display:'flex',alignItems:'center',justifyContent:'center',background:'#0a0a0a'}}>
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'linear-gradient(145deg,#111,#1a1a1a)',border:'2px solid #4ade80',borderRadius:'1.5rem',width:'120px',height:'120px',boxShadow:'0 0 32px rgba(74,222,128,0.25)'}}>
+                      <span style={{fontSize:'2rem',fontWeight:900,color:'#4ade80',letterSpacing:'-2px',lineHeight:1}}>PS</span>
+                      <span style={{fontSize:'0.55rem',color:'#9ca3af',letterSpacing:'0.15em',marginTop:'4px',textTransform:'uppercase'}}>PadelStats</span>
+                    </div>
                   </div>
                 </div>
                 {/* Floating stats cards */}
@@ -146,8 +149,8 @@ const Home = () => {
               </Link>
             </div>
             <div className="product-details-image">
-              <div className="product-details-image-container">
-                <img src="/pcb-padelstats.jpg" alt="PadelStats PCB" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'0.5rem'}} />
+              <div className="product-details-image-container" style={{background:'#f3f4f6',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <img src="/producto-padelstats.jpg" alt="PadelStats Sensor" style={{maxWidth:'100%',maxHeight:'100%',objectFit:'contain',borderRadius:'0.5rem'}} />
               </div>
             </div>
           </div>
