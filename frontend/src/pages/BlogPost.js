@@ -65,7 +65,7 @@ const BlogPost = () => {
         <p>Recuerda que la mejora en el remate requiere práctica constante y análisis de datos. Con PadelStats, tienes las herramientas para convertirte en un rematador letal.</p>
       `,
       excerpt: 'Descubre los secretos para ejecutar remates más efectivos y potentes en el pádel.',
-      featured_image: 'https://images.unsplash.com/photo-1554068865-24ceec697d3b?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1200&h=500&fit=crop&auto=format',
       author: 'PadelStats Team',
       created_at: '2024-01-15T10:00:00Z',
       views: 0
@@ -150,7 +150,7 @@ const BlogPost = () => {
         <p>Con estos pasos, tu PadelStats estará listo para registrar todos tus golpes y ayudarte a mejorar tu juego. ¡A jugar!</p>
       `,
       excerpt: 'Tutorial paso a paso para conectar tu sensor PadelStats con la aplicación móvil.',
-      featured_image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&h=500&fit=crop&auto=format',
       author: 'Soporte Técnico',
       created_at: '2024-01-02T11:20:00Z',
       views: 0
@@ -211,7 +211,7 @@ const BlogPost = () => {
         <p>Mejorar tu zona de golpe ideal es uno de los cambios técnicos con mayor retorno de inversión en el pádel. Con los datos de PadelStats, puedes hacerlo de forma objetiva y medible.</p>
       `,
       excerpt: 'Con PadelStats hemos analizado miles de golpes para determinar cuál es la zona óptima de impacto en la pala.',
-      featured_image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=500&fit=crop&auto=format',
       author: 'Dr. Carlos Martínez',
       created_at: '2024-01-12T14:30:00Z',
       views: 0
@@ -252,7 +252,7 @@ const BlogPost = () => {
         <p>Recuerda: identificar el error es el 50% del trabajo. El otro 50% es la repetición consciente de la corrección. Los datos te dan el mapa; tú decides si caminas por él.</p>
       `,
       excerpt: 'Analizamos los datos de más de 10.000 partidos registrados con PadelStats para identificar los errores técnicos más frecuentes.',
-      featured_image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1545809074-59472b3f5ecc?w=1200&h=500&fit=crop&auto=format',
       author: 'Ana García',
       created_at: '2024-01-08T09:15:00Z',
       views: 0
@@ -301,7 +301,7 @@ const BlogPost = () => {
         <p>El pádel con datos no es el futuro: es el presente. Y la buena noticia es que nunca ha sido tan accesible.</p>
       `,
       excerpt: 'El entrenamiento basado en datos está transformando el pádel. Descubre cómo los sensores inteligentes como PadelStats están cambiando la forma de entrenar.',
-      featured_image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1200&h=500&fit=crop&auto=format',
       author: 'PadelStats Team',
       created_at: '2024-01-05T16:45:00Z',
       views: 0
@@ -352,7 +352,7 @@ const BlogPost = () => {
         <p>La revolución de la IA en el pádel no va a cambiar la esencia del juego: la técnica, el trabajo duro y la inteligencia competitiva siguen siendo fundamentales. Pero va a dar a cada jugador herramientas que antes solo existían en los laboratorios de los equipos profesionales. Y eso cambia todo.</p>
       `,
       excerpt: 'Exploramos cómo la inteligencia artificial y el machine learning están siendo aplicados al análisis del pádel, permitiendo predicciones de rendimiento y consejos personalizados.',
-      featured_image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=500&fit=crop&auto=format',
       author: 'Dr. Luis Rodríguez',
       created_at: '2023-12-28T13:10:00Z',
       views: 0
