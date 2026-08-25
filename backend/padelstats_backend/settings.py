@@ -101,12 +101,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend_build', 'static'),
-]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+_frontend_static = os.path.join(BASE_DIR, 'frontend_build', 'static')
+STATICFILES_DIRS = [_frontend_static] if os.path.isdir(_frontend_static) else []
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
 # Serve React public/ files (manifest.json, images, favicon) at root URL
-WHITENOISE_ROOT = os.path.join(BASE_DIR, 'frontend_build')
+_frontend_build = os.path.join(BASE_DIR, 'frontend_build')
+WHITENOISE_ROOT = _frontend_build if os.path.isdir(_frontend_build) else None
 
 # Media files
 MEDIA_URL = '/media/'
