@@ -36,7 +36,7 @@ const Blog = () => {
       title: 'Los errores más comunes en el pádel según los datos',
       slug: 'errores-comunes-padel-segun-datos',
       excerpt: 'Analizamos los datos de más de 10,000 partidos registrados con PadelStats para identificar los errores técnicos más frecuentes y cómo corregirlos.',
-      featured_image: 'https://images.unsplash.com/photo-1545809074-59472b3f5ecc?w=800&h=450&fit=crop&auto=format',
+      featured_image: 'https://th.bing.com/th/id/R.b6727742c8fc928c6cc371557474c991?rik=EOaReWAQzZKiiw&riu=http%3a%2f%2fapcsports.fr%2fwp-content%2fuploads%2f2022%2f09%2fpadel-scaled.jpg&ehk=xIU9nge20o1MToPOq3KdrGIGdUL6UQakBhFLEQ59FqQ%3d&risl=&pid=ImgRaw&r=0',
       author: 'Ana García',
       category: 'Estadísticas',
       created_at: '2024-01-08T09:15:00Z',
