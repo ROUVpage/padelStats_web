@@ -35,7 +35,7 @@ const Home = () => {
               <div className="product-card">
                 <div className="product-main-card">
                   <div className="product-image">
-                    <span className="product-image-placeholder">Imagen del Producto</span>
+                    <img src="/pcb-padelstats.jpg" alt="PadelStats PCB" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'0.5rem'}} />
                   </div>
                 </div>
                 {/* Floating stats cards */}
@@ -147,7 +147,7 @@ const Home = () => {
             </div>
             <div className="product-details-image">
               <div className="product-details-image-container">
-                <span className="product-image-placeholder">Imagen Técnica del Sensor</span>
+                <img src="/pcb-padelstats.jpg" alt="PadelStats PCB" style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:'0.5rem'}} />
               </div>
             </div>
           </div>
