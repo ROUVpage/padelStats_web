@@ -221,7 +221,7 @@
 
 @media (min-width: 1024px) {
   .product-hero-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.4fr 1fr;
   }
 }
 
