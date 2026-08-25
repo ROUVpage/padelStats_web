@@ -557,7 +557,7 @@ const BlogPost = () => {
           <div className="max-w-md mx-auto">
             {subscribed ? (
               <div style={{background:'rgba(255,255,255,0.15)',borderRadius:'0.75rem',padding:'1.25rem',color:'#ffffff',fontWeight:600,fontSize:'1.1rem'}}>
-                🎾 ¡Muchas gracias por registrarte! Pronto recibirás nuestros consejos.
+                ¡Muchas gracias por registrarte! Pronto recibirás nuestros consejos.
               </div>
             ) : (
               <div className="flex">
