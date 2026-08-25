@@ -226,14 +226,10 @@
 }
 
 .product-image-container {
-  background: linear-gradient(145deg, #404040, #2d2d2d);
   border-radius: 1rem;
-  padding: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 25rem;
+  overflow: hidden;
   border: 1px solid #525252;
+  line-height: 0;
 }
 
 .product-image-placeholder {
