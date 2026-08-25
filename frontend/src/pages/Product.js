@@ -187,17 +187,6 @@ const Product = () => {
                 className={`feature-block ${visibleFeatures[index] ? 'visible' : ''}`}
               >
                 <div className="feature-block-grid">
-                  <div className="feature-image-container">
-                    {feature.image ? (
-                      <img
-                        src={feature.image}
-                        alt={feature.title}
-                        className="feature-image"
-                      />
-                    ) : (
-                      <span className="feature-image-placeholder">Imagen {feature.title}</span>
-                    )}
-                  </div>
                   <div>
                     <div className="feature-block-header">
                       <span className="feature-index">{String(index + 1).padStart(2, '0')}</span>
