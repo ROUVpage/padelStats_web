@@ -440,9 +440,6 @@ const Product = () => {
                     </button>
                   </div>
                 </div>
-                <div className="app-screenshot-container">
-                  <span className="app-screenshot-placeholder">Screenshots de la App</span>
-                </div>
               </div>
             </div>
           )}
