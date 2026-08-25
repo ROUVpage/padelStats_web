@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["python311"]
+nixPkgs = ["python311", "nodejs_20", "nodePackages.npm"]
 
 [phases.install]
-cmds = ["pip install -r backend/requirements.txt"]
+cmds = ["pip install -r backend/requirements.txt", "cd frontend && npm install"]
 
 [phases.build]
-cmds = ["cd backend && python manage.py collectstatic --noinput"]
+cmds = ["cd frontend && BUILD_PATH=../backend/frontend_build npm run build", "cd backend && python manage.py collectstatic --noinput"]
 
 [start]
 cmd = "cd backend && python manage.py migrate --noinput && gunicorn padelstats_backend.wsgi:application --bind 0.0.0.0:$PORT"
