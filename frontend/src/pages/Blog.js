@@ -14,7 +14,7 @@ const Blog = () => {
       title: 'Cómo mejorar tu técnica de remate en pádel',
       slug: 'como-mejorar-tecnica-remate-padel',
       excerpt: 'Descubre los secretos para ejecutar remates más efectivos y potentes en el pádel. Analizamos la técnica correcta, errores comunes y ejercicios específicos para mejorar tu juego ofensivo.',
-      featured_image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&h=450&fit=crop&auto=format',
+      featured_image: 'https://tse2.mm.bing.net/th/id/OIP.dL7cZ3C7ZsmBZCCQiWQZAQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
       author: 'PadelStats Team',
       category: 'Técnica',
       created_at: '2024-01-15T10:00:00Z',
