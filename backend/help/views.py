@@ -79,7 +79,7 @@ Sistema Automático PadelStats
             message=message,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=['padelstats0@gmail.com'],
-            fail_silently=False,
+            fail_silently=True,
         )
     
     def send_customer_confirmation(self, contact):
@@ -125,5 +125,5 @@ El equipo de PadelStats
             message=message,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[contact.email],
-            fail_silently=False,
+            fail_silently=True,
         )
