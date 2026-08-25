@@ -154,7 +154,7 @@
 }
 
 .product-image {
-  height: 20rem;
+  height: 13rem;
   background: linear-gradient(145deg, #404040, #2d2d2d);
   border-radius: 0.5rem;
   display: flex;
@@ -415,14 +415,16 @@
 }
 
 .product-details-image-container {
-  background: linear-gradient(145deg, #404040, #2d2d2d);
+  background: #f3f4f6;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 20rem;
-  border: 1px solid #525252;
+  min-height: 16rem;
+  max-width: 22rem;
+  margin: 0 auto;
+  border: 1px solid #e5e7eb;
 }
 
 /* CTA Section */
