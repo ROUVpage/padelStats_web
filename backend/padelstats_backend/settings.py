@@ -105,6 +105,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend_build', 'static'),
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Serve React public/ files (manifest.json, images, favicon) at root URL
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'frontend_build')
 
 # Media files
 MEDIA_URL = '/media/'
