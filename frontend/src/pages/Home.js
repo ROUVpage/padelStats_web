@@ -72,28 +72,23 @@ const Home = () => {
           <div className="features-grid">
             {[
               {
-                icon: '🎯',
                 title: 'Análisis Técnico',
                 description: 'Analiza todos tus golpes y movimientos en la pista'
               },
               {
-                icon: '⚡',
                 title: 'Medición de Potencia',
                 description: 'Analiza la fuerza y el peso aplicados en cada golpe'
               },
               {
-                icon: '⚠️',
                 title: 'Prevención de Lesiones',
                 description: 'Identifica patrones de movimiento lesivos'
               },
               {
-                icon: '💪',
                 title: 'Exigencia Física',
                 description: 'Controla tu desgaste físico y optimiza tu rendimiento'
               }
             ].map((feature, index) => (
               <div key={index} className="feature-card">
-                <div className="feature-icon">{feature.icon}</div>
                 <h3 className="feature-title">{feature.title}</h3>
                 <p className="feature-description">{feature.description}</p>
               </div>
