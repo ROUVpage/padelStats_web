@@ -419,10 +419,6 @@
   background: #f3f4f6;
   border-radius: 1rem;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 26rem;
   border: 1px solid #e5e7eb;
 }
 
