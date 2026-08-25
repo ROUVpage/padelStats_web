@@ -35,7 +35,7 @@ const Home = () => {
               <div className="product-card">
                 <div className="product-main-card">
                   <div className="product-image" style={{display:'flex',alignItems:'center',justifyContent:'center',background:'#0a0a0a'}}>
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'linear-gradient(145deg,#111,#1a1a1a)',border:'2px solid #4ade80',borderRadius:'1.5rem',width:'160px',height:'160px',boxShadow:'0 0 32px rgba(74,222,128,0.25)'}}>
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'linear-gradient(145deg,#111,#1a1a1a)',border:'2px solid #4ade80',borderRadius:'1.5rem',width:'160px',height:'120px',boxShadow:'0 0 32px rgba(74,222,128,0.25)'}}>
                       <span style={{fontSize:'3.5rem',fontWeight:900,color:'#4ade80',letterSpacing:'-2px',lineHeight:1}}>PS</span>
                       <span style={{fontSize:'0.6rem',color:'#9ca3af',letterSpacing:'0.15em',marginTop:'6px',textTransform:'uppercase'}}>PadelStats</span>
                     </div>
