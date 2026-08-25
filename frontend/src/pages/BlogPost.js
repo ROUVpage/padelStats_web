@@ -352,7 +352,7 @@ const BlogPost = () => {
         <p>La revolución de la IA en el pádel no va a cambiar la esencia del juego: la técnica, el trabajo duro y la inteligencia competitiva siguen siendo fundamentales. Pero va a dar a cada jugador herramientas que antes solo existían en los laboratorios de los equipos profesionales. Y eso cambia todo.</p>
       `,
       excerpt: 'Exploramos cómo la inteligencia artificial y el machine learning están siendo aplicados al análisis del pádel, permitiendo predicciones de rendimiento y consejos personalizados.',
-      featured_image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=500&fit=crop&auto=format',
+      featured_image: 'https://mecaluxmx.cdnwm.com/img/articulos-de-logistica/redes-neuronales-analisis-datos-inteligencia-artificial.1.9.jpg',
       author: 'Dr. Luis Rodríguez',
       created_at: '2023-12-28T13:10:00Z',
       views: 0

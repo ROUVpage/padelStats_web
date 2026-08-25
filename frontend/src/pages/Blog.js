@@ -69,7 +69,7 @@ const Blog = () => {
       title: 'El futuro del pádel: Inteligencia artificial y análisis predictivo',
       slug: 'futuro-padel-ia-analisis-predictivo',
       excerpt: 'Exploramos cómo la inteligencia artificial y el machine learning están siendo aplicados al análisis del pádel, permitiendo predicciones de rendimiento y consejos personalizados.',
-      featured_image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=450&fit=crop&auto=format',
+      featured_image: 'https://mecaluxmx.cdnwm.com/img/articulos-de-logistica/redes-neuronales-analisis-datos-inteligencia-artificial.1.9.jpg',
       author: 'Dr. Luis Rodríguez',
       category: 'Investigación',
       created_at: '2023-12-28T13:10:00Z',
