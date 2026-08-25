@@ -151,7 +151,7 @@ const Home = () => {
             </div>
             <div className="product-details-image">
               <div className="product-details-image-container" style={{background:'#f3f4f6',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <img src="/demo-app.png" alt="PadelStats App" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',transform:'scale(1.25)',transformOrigin:'center',borderRadius:'0.5rem',display:'block'}} />
+                <img src="/demo-app.png" alt="PadelStats App" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'left center',transform:'scale(1.25)',transformOrigin:'right center',borderRadius:'0.5rem',display:'block'}} />
               </div>
             </div>
           </div>
