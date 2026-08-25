@@ -290,11 +290,10 @@ const Product = () => {
                   )}
                 </div>
                 <button 
-                  onClick={goToCart}
-                  className="cart-button"
+                  disabled
+                  className="cart-button cart-button--soldout"
                 >
-                  <FaShoppingCart className="cart-icon" />
-                  Ir al Carrito - €{calculatePrice().toFixed(2)}
+                  Producto Agotado
                 </button>
                 <p className="savings-text">
                   {quantity >= 4 ? 
@@ -456,11 +455,10 @@ const Product = () => {
             Únete a la revolución del pádel inteligente con PadelStats
           </p>
           <button 
-            onClick={goToCart}
-            className="cta-button"
+            disabled
+            className="cta-button cta-button--soldout"
           >
-            <FaShoppingCart className="cart-icon" />
-            Ir al Carrito - €{calculatePrice().toFixed(2)}
+            Producto Agotado
           </button>
         </div>
       </section>

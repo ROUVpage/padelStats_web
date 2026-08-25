@@ -163,9 +163,8 @@ const Home = () => {
           <p className="cta-subtitle">
             Únete a miles de jugadores que ya mejoran su rendimiento con PadelStats
           </p>
-          <Link to="/producto" className="cta-button">
-            <FaArrowRight className="button-icon-left" />
-            Comprar Ahora
+          <Link to="/producto" className="cta-button cta-button--soldout">
+            Producto Agotado
           </Link>
         </div>
       </section>

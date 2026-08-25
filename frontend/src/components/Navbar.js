@@ -56,9 +56,9 @@ const Navbar = () => {
               >
                 Ayuda
               </Link>
-              <Link to="/producto" className="cta-button">
-                Comprar Ahora
-              </Link>
+              <span className="cta-button cta-button--soldout">
+                Agotado
+              </span>
             </div>
           </div>
 
@@ -102,13 +102,11 @@ const Navbar = () => {
             >
               Ayuda
             </Link>
-            <Link 
-              to="/producto" 
-              className="mobile-cta-button"
-              onClick={() => setIsOpen(false)}
+            <span
+              className="mobile-cta-button mobile-cta-button--soldout"
             >
-              Comprar Ahora
-            </Link>
+              Agotado
+            </span>
           </div>
         </div>
       </div>

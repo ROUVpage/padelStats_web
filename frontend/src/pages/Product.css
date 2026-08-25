@@ -388,6 +388,14 @@
   transform: translateY(-1px);
 }
 
+.cart-button--soldout,
+.cart-button--soldout:hover {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .savings-text {
   font-size: 0.875rem;
   color: #d1d5db;
@@ -763,6 +771,14 @@
 .cta-button:hover {
   background: #1a1a1a;
   transform: translateY(-1px);
+}
+
+.cta-button--soldout,
+.cta-button--soldout:hover {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .cart-icon {

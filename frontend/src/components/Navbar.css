@@ -99,6 +99,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.cta-button--soldout,
+.cta-button--soldout:hover {
+  background: #4b5563;
+  color: #9ca3af;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Mobile Menu */
 .mobile-menu-button {
   display: block;
