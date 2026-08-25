@@ -8,6 +8,8 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Help from './pages/Help';
 import Cart from './pages/Cart';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/ayuda" element={<Help />} />
             <Route path="/carrito" element={<Cart />} />
+            <Route path="/terminos" element={<Terms />} />
+            <Route path="/privacidad" element={<Privacy />} />
           </Routes>
         </main>
         <Footer />
