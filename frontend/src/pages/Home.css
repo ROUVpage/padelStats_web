@@ -420,7 +420,7 @@
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid #e5e7eb;
-  height: 380px;
+  aspect-ratio: 3/2;
 }
 
 /* CTA Section */

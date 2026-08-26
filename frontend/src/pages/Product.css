@@ -230,7 +230,7 @@
   overflow: hidden;
   border: 1px solid #525252;
   line-height: 0;
-  height: 420px;
+  aspect-ratio: 3/2;
 }
 
 .product-image-placeholder {
