@@ -416,11 +416,9 @@
 }
 
 .product-details-image-container {
-  background: #f3f4f6;
   border-radius: 1rem;
   overflow: hidden;
   border: 1px solid #e5e7eb;
-  aspect-ratio: 3/2;
 }
 
 /* CTA Section */
