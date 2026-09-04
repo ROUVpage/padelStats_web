@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaCheck, FaTimes, FaSpinner, FaShieldAlt, FaTruck, FaTag, FaUser, FaEnvelope, FaMapMarkerAlt, FaGlobeEurope, FaPhone, FaGoogle } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Cart.css';
 
 const Cart = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const [cartData, setCartData] = useState(null);
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(null);
@@ -85,7 +88,7 @@ const Cart = () => {
 
   const applyDiscountCode = async () => {
     if (!discountCode.trim()) {
-      setDiscountMessage('Por favor, ingresa un código de descuento');
+      setDiscountMessage(isEnglish ? 'Please enter a discount code' : 'Por favor, ingresa un código de descuento');
       return;
     }
 
@@ -107,14 +110,14 @@ const Cart = () => {
 
       if (response.ok && data.valid) {
         setAppliedDiscount(data);
-        setDiscountMessage(`¡Código aplicado! Descuento del ${data.discount_percentage}%`);
+        setDiscountMessage(isEnglish ? `Code applied. ${data.discount_percentage}% discount` : `¡Código aplicado! Descuento del ${data.discount_percentage}%`);
         setDiscountCode('');
       } else {
         setAppliedDiscount(null);
-        setDiscountMessage('Código de descuento no válido');
+        setDiscountMessage(isEnglish ? 'Invalid discount code' : 'Código de descuento no válido');
       }
     } catch (error) {
-      setDiscountMessage('Error al validar el código. Inténtalo de nuevo.');
+      setDiscountMessage(isEnglish ? 'Could not validate the code. Try again.' : 'Error al validar el código. Inténtalo de nuevo.');
     } finally {
       setDiscountLoading(false);
     }
@@ -253,7 +256,7 @@ const Cart = () => {
       <div className="cart-container">
         <div className="success-container">
           <FaSpinner className="success-icon" />
-          <p className="success-message">Cargando carrito...</p>
+          <p className="success-message">{isEnglish ? 'Loading cart...' : 'Cargando carrito...'}</p>
         </div>
       </div>
     );
@@ -267,9 +270,9 @@ const Cart = () => {
           <div className="cart-header-content">
             <Link to="/producto" className="back-button">
               <FaArrowLeft className="back-icon" />
-              Volver al Producto
+              {isEnglish ? 'Back to Product' : 'Volver al Producto'}
             </Link>
-            <h1 className="cart-title">Mi Carrito</h1>
+            <h1 className="cart-title">{isEnglish ? 'My Cart' : 'Mi Carrito'}</h1>
           </div>
         </div>
       </section>
@@ -282,19 +285,19 @@ const Cart = () => {
             <div>
               {/* Product Card */}
               <div className="product-card">
-                <h2 className="card-title">Resumen del Pedido</h2>
+                <h2 className="card-title">{isEnglish ? 'Order Summary' : 'Resumen del Pedido'}</h2>
                 
                 <div className="product-info">
                   <div className="product-image">
-                    <span className="product-image-placeholder">Imagen</span>
+                    <span className="product-image-placeholder">{isEnglish ? 'Image' : 'Imagen'}</span>
                   </div>
                   <div className="product-details">
                     <h3 className="product-name">PadelStats Sensor</h3>
                     <p className="product-description">
-                      Sensor inteligente para pádel que mide potencia, precisión, efecto y exigencia física.
+                      {isEnglish ? 'Smart padel sensor that measures power, accuracy, spin and physical exertion.' : 'Sensor inteligente para pádel que mide potencia, precisión, efecto y exigencia física.'}
                     </p>
                     <div className="quantity-info">
-                      <span className="quantity-label">Cantidad: {cartData.quantity}</span>
+                      <span className="quantity-label">{isEnglish ? 'Quantity' : 'Cantidad'}: {cartData.quantity}</span>
                       <span className="unit-price">€{cartData.unitPrice.toFixed(2)} c/u</span>
                     </div>
                   </div>
@@ -304,7 +307,7 @@ const Cart = () => {
                 <div className="discount-section">
                   <div className="discount-header">
                     <FaTag className="discount-icon" />
-                    <h3 className="discount-title">Código de Descuento</h3>
+                    <h3 className="discount-title">{isEnglish ? 'Discount Code' : 'Código de Descuento'}</h3>
                   </div>
 
                   <div className="discount-input-container">
@@ -312,7 +315,7 @@ const Cart = () => {
                       type="text"
                       value={discountCode}
                       onChange={(e) => setDiscountCode(e.target.value)}
-                      placeholder="Ingresa tu código aquí"
+                      placeholder={isEnglish ? 'Enter your code here' : 'Ingresa tu código aquí'}
                       className="discount-input"
                       disabled={discountLoading}
                     />
@@ -326,7 +329,7 @@ const Cart = () => {
                       ) : (
                         <FaCheck className="apply-icon" />
                       )}
-                      Aplicar
+                      {isEnglish ? 'Apply' : 'Aplicar'}
                     </button>
                   </div>
 

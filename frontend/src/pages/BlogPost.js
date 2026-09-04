@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaCalendar, FaUser, FaEye, FaArrowLeft, FaShare, FaHeart } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 
 const BlogPost = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -375,7 +378,7 @@ const BlogPost = () => {
   }, [slug]);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+    return new Date(dateString).toLocaleDateString(isEnglish ? 'en-GB' : 'es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -390,7 +393,7 @@ const BlogPost = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Enlace copiado al portapapeles');
+      alert(isEnglish ? 'Link copied to clipboard' : 'Enlace copiado al portapapeles');
     }
   };
 
@@ -399,7 +402,7 @@ const BlogPost = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando artículo...</p>
+          <p className="mt-4 text-gray-600">{isEnglish ? 'Loading article...' : 'Cargando artículo...'}</p>
         </div>
       </div>
     );
@@ -409,10 +412,10 @@ const BlogPost = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Artículo no encontrado</h1>
-          <p className="text-gray-600 mb-6">El artículo que buscas no existe o ha sido eliminado.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">{isEnglish ? 'Article not found' : 'Artículo no encontrado'}</h1>
+          <p className="text-gray-600 mb-6">{isEnglish ? 'The article you are looking for does not exist or has been removed.' : 'El artículo que buscas no existe o ha sido eliminado.'}</p>
           <Link to="/blog" className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors">
-            Volver al Blog
+            {isEnglish ? 'Back to Blog' : 'Volver al Blog'}
           </Link>
         </div>
       </div>
@@ -429,7 +432,7 @@ const BlogPost = () => {
             className="inline-flex items-center text-primary-600 hover:text-primary-700 transition-colors"
           >
             <FaArrowLeft className="mr-2" />
-            Volver al Blog
+            {isEnglish ? 'Back to Blog' : 'Volver al Blog'}
           </Link>
         </div>
       </div>
@@ -453,7 +456,7 @@ const BlogPost = () => {
               </div>
               <div className="flex items-center mr-6 mb-2">
                 <FaEye className="mr-2" />
-                <span>{post.views} vistas</span>
+                <span>{post.views} {isEnglish ? 'views' : 'vistas'}</span>
               </div>
             </div>
 
@@ -468,7 +471,7 @@ const BlogPost = () => {
                 }`}
               >
                 <FaHeart className={`mr-2 ${liked ? 'text-red-500' : ''}`} />
-                {liked ? 'Te gusta' : 'Me gusta'}
+                {liked ? (isEnglish ? 'Liked' : 'Te gusta') : (isEnglish ? 'Like' : 'Me gusta')}
               </button>
               
               <button
@@ -476,7 +479,7 @@ const BlogPost = () => {
                 className="flex items-center px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
               >
                 <FaShare className="mr-2" />
-                Compartir
+                {isEnglish ? 'Share' : 'Compartir'}
               </button>
             </div>
 
@@ -515,7 +518,7 @@ const BlogPost = () => {
       {/* Related Articles */}
       <section className="py-12 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Te puede interesar</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">{isEnglish ? 'You may also like' : 'Te puede interesar'}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Link 
@@ -549,15 +552,15 @@ const BlogPost = () => {
       <section className="py-12 bg-primary-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">
-            ¿Te gustó este artículo?
+            {isEnglish ? 'Did you enjoy this article?' : '¿Te gustó este artículo?'}
           </h2>
           <p className="text-primary-100 mb-6">
-            Suscríbete para recibir más consejos y análisis de pádel
+            {isEnglish ? 'Subscribe for more padel tips and analysis' : 'Suscríbete para recibir más consejos y análisis de pádel'}
           </p>
           <div className="max-w-md mx-auto">
             {subscribed ? (
               <div style={{background:'rgba(255,255,255,0.15)',borderRadius:'0.75rem',padding:'1.25rem',color:'#ffffff',fontWeight:600,fontSize:'1.1rem'}}>
-                ¡Muchas gracias por registrarte! Pronto recibirás nuestros consejos.
+                {isEnglish ? 'Thank you for subscribing. You will receive our tips soon.' : '¡Muchas gracias por registrarte! Pronto recibirás nuestros consejos.'}
               </div>
             ) : (
               <div className="flex">
@@ -565,14 +568,14 @@ const BlogPost = () => {
                   type="email"
                   value={subscribeEmail}
                   onChange={e => setSubscribeEmail(e.target.value)}
-                  placeholder="Tu email"
+                  placeholder={isEnglish ? 'Your email' : 'Tu email'}
                   className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:outline-none focus:ring-2 focus:ring-primary-300"
                 />
                 <button
                   onClick={() => { if (subscribeEmail) setSubscribed(true); }}
                   className="bg-accent-500 text-white px-6 py-3 rounded-r-lg font-semibold hover:bg-accent-600 transition-colors"
                 >
-                  Suscribirse
+                  {isEnglish ? 'Subscribe' : 'Suscribirse'}
                 </button>
               </div>
             )}

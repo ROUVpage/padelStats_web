@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCheck, FaBatteryFull, FaWifi, FaShieldAlt, FaMobile, FaShoppingCart } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Product.css';
 
 const Product = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const [selectedTab, setSelectedTab] = useState('features');
   const [quantity, setQuantity] = useState(1);
   const [quantityError, setQuantityError] = useState(null);
@@ -12,7 +15,16 @@ const Product = () => {
   const navigate = useNavigate();
 
   // Características del producto (debe declararse antes de usarse en cálculos)
-  const features = [
+  const features = isEnglish ? [
+    { title: 'Power Measurement', description: 'Analyze the force applied to every shot with high-precision sensors. Get detailed metrics for impact speed and energy transferred to the ball.', details: ['Measurement range: 0-130 km/h', 'Accuracy: ±2%', 'Unit: Newtons (N)'], image: '' },
+    { title: 'Technique Analysis', description: 'Evaluate your shot technique in real time, analyzing posture, movement and execution to identify opportunities to improve.', details: ['Biomechanical shot analysis', 'Technical movement correction', 'Personalized technical recommendations'], image: '' },
+    { title: 'Ball Speed', description: 'Measure the exact speed the ball reaches after impact, essential for assessing the effectiveness of every shot.', details: ['Ball exit speed', 'Racket speed', 'Energy transfer optimization'], image: '' },
+    { title: 'Physical Demand', description: 'Monitor your physical exertion during play. Track the intensity of each shot and optimize performance throughout the match.', details: ['Muscle demand per shot', 'Interactive physical-exertion chart', 'Recovery tips tailored to you'], image: '' },
+    { title: 'Impact Point', description: 'Identify the exact point where the ball hits the racket to find and maintain the sweet spot for greater control.', details: ['Improve accuracy on every shot', 'Your racket sweet spot', 'Clean ball impact'], image: '' },
+    { title: 'Shot Classification', description: 'Automatically identify every shot type: forehands, backhands, volleys, smashes, bandejas and drop shots.', details: ['Automatic shot detection', 'Movement pattern analysis', 'Shot-by-shot classification'], image: '' },
+    { title: 'Injury Prevention', description: 'An advanced injury detection and prevention system that analyzes movement patterns and joint stress in real time.', details: ['Risky movement detection', 'Joint overload analysis', 'Injury-prevention guidance'], image: '' },
+    { title: 'Spin Measurement', description: 'Analyze spin applied to every ball, including topspin, slice and sidespin. Refine your technique with precise ball-rotation data.', details: ['Rotation speed detection', 'Complex spin analysis', 'Topspin, slice and sidespin differentiation'], image: '' }
+  ] : [
     {
       title: 'Medición de Potencia',
       description: 'Analiza la fuerza aplicada en cada golpe con sensores de alta precisión. Obtén métricas detalladas sobre la velocidad de impacto y la energía transferida a la pelota.',
@@ -151,7 +163,9 @@ const Product = () => {
     navigate('/carrito');
   };
 
-  const specifications = [
+  const specifications = isEnglish ? [
+    { label: 'Battery life', value: '4h 30min', icon: <FaBatteryFull /> }, { label: 'Connectivity', value: 'Bluetooth 5.0', icon: <FaWifi /> }, { label: 'Resistance', value: 'IPX7 - Highly durable', icon: <FaShieldAlt /> }, { label: 'Weight', value: '12g', icon: '⚖️' }, { label: 'Dimensions', value: '4x2x1 cm', icon: '📏' }, { label: 'Material', value: 'Polycarbonate', icon: '🛡️' }, { label: 'Mobile app', value: 'Free iOS/Android', icon: <FaMobile /> }, { label: 'Memory', value: '250 matches', icon: '🧠' }
+  ] : [
     { label: 'Duración de batería', value: '4h 30min', icon: <FaBatteryFull /> },
     { label: 'Conectividad', value: 'Bluetooth 5.0', icon: <FaWifi /> },
     { label: 'Resistencia', value: 'IPX7 - Muy duradera', icon: <FaShieldAlt /> },
@@ -171,10 +185,10 @@ const Product = () => {
         <div className="features-container">
           <div className="features-header">
             <h2 className="features-title">
-              Características PadelStats
+              {isEnglish ? 'PadelStats Features' : 'Características PadelStats'}
             </h2>
             <p className="features-subtitle">
-              Descubre todo lo que PadelStats puede medir y analizar en cada golpe
+              {isEnglish ? 'Discover everything PadelStats can measure and analyze in every shot' : 'Descubre todo lo que PadelStats puede medir y analizar en cada golpe'}
             </p>
           </div>
           
@@ -208,12 +222,12 @@ const Product = () => {
             <div className="features-actions">
               {allowReveal && allVisible ? (
                 <button className="feature-button secondary" onClick={collapseFeatures}>
-                  Ver menos
+                  {isEnglish ? 'Show less' : 'Ver menos'}
                 </button>
               ) : null}
               {!allowReveal ? (
                 <button className="feature-button" onClick={expandFeatures}>
-                  Ver más características
+                  {isEnglish ? 'Show more features' : 'Ver más características'}
                 </button>
               ) : null}
             </div>
@@ -235,9 +249,7 @@ const Product = () => {
                 PadelStats Sensor
               </h1>
               <p className="product-subtitle">
-                El primer sensor inteligente diseñado específicamente para pádel. 
-                Se coloca fácilmente en el canto de tu pala y registra cada golpe 
-                con precisión profesional.
+                {isEnglish ? 'The first smart sensor designed specifically for padel. It attaches easily to the edge of your racket and records every shot with professional accuracy.' : 'El primer sensor inteligente diseñado específicamente para pádel. Se coloca fácilmente en el canto de tu pala y registra cada golpe con precisión profesional.'}
               </p>
 
               {/* Price Section */}
@@ -252,12 +264,12 @@ const Product = () => {
                     </div>
                     {quantity >= 4 && (
                       <div className="pack-badge">
-                        ¡PACK DE 4 - MEJOR PRECIO!
+                        {isEnglish ? 'PACK OF 4 - BEST PRICE!' : '¡PACK DE 4 - MEJOR PRECIO!'}
                       </div>
                     )}
                   </div>
                   <div className="quantity-selector">
-                    <label className="quantity-label">Cantidad:</label>
+                    <label className="quantity-label">{isEnglish ? 'Quantity:' : 'Cantidad:'}</label>
                     <input
                       type="number"
                       min="1"
@@ -284,8 +296,8 @@ const Product = () => {
                   </div>
                   {quantityError && (
                     <div className="quantity-error">
-                      <p>El valor no es válido. Por favor, ingresa un número válido.</p>
-                      <a href="/ayuda" className="error-help-link">¿Necesitas ayuda? Pulsa aquí</a>
+                      <p>{isEnglish ? 'This value is invalid. Please enter a valid number.' : 'El valor no es válido. Por favor, ingresa un número válido.'}</p>
+                      <a href="/ayuda" className="error-help-link">{isEnglish ? 'Need help? Click here' : '¿Necesitas ayuda? Pulsa aquí'}</a>
                     </div>
                   )}
                 </div>
@@ -293,12 +305,12 @@ const Product = () => {
                   disabled
                   className="cart-button cart-button--soldout"
                 >
-                  Producto Agotado
+                  {isEnglish ? 'Product Sold Out' : 'Producto Agotado'}
                 </button>
                 <p className="savings-text">
                   {quantity >= 4 ? 
-                    `Ahorro de €${((84.99 - 49.99) * quantity).toFixed(2)} con el pack de ${quantity}` :
-                    `Ahorro de €${((84.99 - 59.99) * quantity).toFixed(2)}`
+                    isEnglish ? `Save €${((84.99 - 49.99) * quantity).toFixed(2)} with the pack of ${quantity}` : `Ahorro de €${((84.99 - 49.99) * quantity).toFixed(2)} con el pack de ${quantity}` :
+                    isEnglish ? `Save €${((84.99 - 59.99) * quantity).toFixed(2)}` : `Ahorro de €${((84.99 - 59.99) * quantity).toFixed(2)}`
                   }
                 </p>
               </div>
@@ -307,19 +319,19 @@ const Product = () => {
               <div className="benefits-grid">
                 <div className="benefit-item">
                   <FaCheck className="benefit-check" />
-                  <span className="benefit-text">Envío gratis</span>
+                  <span className="benefit-text">{isEnglish ? 'Free shipping' : 'Envío gratis'}</span>
                 </div>
                 <div className="benefit-item">
                   <FaCheck className="benefit-check" />
-                  <span className="benefit-text">Garantía 2 años</span>
+                  <span className="benefit-text">{isEnglish ? '2-year warranty' : 'Garantía 2 años'}</span>
                 </div>
                 <div className="benefit-item">
                   <FaCheck className="benefit-check" />
-                  <span className="benefit-text">App incluida</span>
+                  <span className="benefit-text">{isEnglish ? 'App included' : 'App incluida'}</span>
                 </div>
                 <div className="benefit-item">
                   <FaCheck className="benefit-check" />
-                  <span className="benefit-text">Devolución 30 días</span>
+                  <span className="benefit-text">{isEnglish ? '30-day returns' : 'Devolución 30 días'}</span>
                 </div>
               </div>
             </div>
@@ -333,9 +345,9 @@ const Product = () => {
           {/* Tab Navigation */}
           <div className="tab-navigation">
             {[
-              { id: 'features', label: 'Características' },
-              { id: 'specs', label: 'Especificaciones' },
-              { id: 'app', label: 'App Móvil' }
+              { id: 'features', label: isEnglish ? 'Features' : 'Características' },
+              { id: 'specs', label: isEnglish ? 'Specifications' : 'Especificaciones' },
+              { id: 'app', label: isEnglish ? 'Mobile App' : 'App Móvil' }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -353,7 +365,7 @@ const Product = () => {
           {selectedTab === 'features' && (
             <div className="tab-content">
               <h3 className="tab-title">
-                Todas las Características PadelStats
+                {isEnglish ? 'All PadelStats Features' : 'Todas las Características PadelStats'}
               </h3>
               <div className="features-grid">
                 {features.map((feature, index) => (
@@ -385,7 +397,7 @@ const Product = () => {
           {selectedTab === 'specs' && (
             <div className="tab-content">
               <h3 className="tab-title">
-                Especificaciones Técnicas
+                {isEnglish ? 'Technical Specifications' : 'Especificaciones Técnicas'}
               </h3>
               <div className="specs-grid">
                 {specifications.map((spec, index) => (
@@ -409,17 +421,12 @@ const Product = () => {
                     App PadelStats
                   </h3>
                   <p className="app-description">
-                    La aplicación móvil gratuita te permite visualizar todas tus estadísticas, 
-                    analizar tu progreso y comparar tu rendimiento con otros jugadores.
+                    {isEnglish ? 'The free mobile app lets you view all your statistics, analyze your progress and compare your performance with other players.' : 'La aplicación móvil gratuita te permite visualizar todas tus estadísticas, analizar tu progreso y comparar tu rendimiento con otros jugadores.'}
                   </p>
                   
                   <div className="app-features">
                     {[
-                      'Análisis en tiempo real',
-                      'Histórico de partidos',
-                      'Comparativas y rankings',
-                      'Consejos personalizados',
-                      'Compatibilidad iOS y Android'
+                      ...(isEnglish ? ['Real-time analysis', 'Match history', 'Comparisons and rankings', 'Personalized tips', 'iOS and Android compatibility'] : ['Análisis en tiempo real', 'Histórico de partidos', 'Comparativas y rankings', 'Consejos personalizados', 'Compatibilidad iOS y Android'])
                     ].map((feature, index) => (
                       <div key={index} className="app-feature-item">
                         <FaCheck className="app-check" />
@@ -449,16 +456,16 @@ const Product = () => {
       <section className="final-cta">
         <div className="cta-container">
           <h2 className="cta-title">
-            ¿Todo listo para elevar tu juego?
+            {isEnglish ? 'Ready to elevate your game?' : '¿Todo listo para elevar tu juego?'}
           </h2>
           <p className="cta-subtitle">
-            Únete a la revolución del pádel inteligente con PadelStats
+            {isEnglish ? 'Join the smart padel revolution with PadelStats' : 'Únete a la revolución del pádel inteligente con PadelStats'}
           </p>
           <button 
             disabled
             className="cta-button cta-button--soldout"
           >
-            Producto Agotado
+            {isEnglish ? 'Product Sold Out' : 'Producto Agotado'}
           </button>
         </div>
       </section>

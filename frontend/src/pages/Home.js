@@ -1,10 +1,29 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPlay, FaArrowRight, FaCheck, FaTimes } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Home.css';
 
 const Home = () => {
   const [demoOpen, setDemoOpen] = useState(false);
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
+  const features = isEnglish
+    ? [
+        { title: 'Technical Analysis', description: 'Analyze every shot and movement on court' },
+        { title: 'Power Measurement', description: 'Analyze the force and weight applied to every shot' },
+        { title: 'Injury Prevention', description: 'Identify harmful movement patterns' },
+        { title: 'Physical Demand', description: 'Monitor your physical exertion and optimize performance' }
+      ]
+    : [
+        { title: 'Análisis Técnico', description: 'Analiza todos tus golpes y movimientos en la pista' },
+        { title: 'Medición de Potencia', description: 'Analiza la fuerza y el peso aplicados en cada golpe' },
+        { title: 'Prevención de Lesiones', description: 'Identifica patrones de movimiento lesivos' },
+        { title: 'Exigencia Física', description: 'Controla tu desgaste físico y optimiza tu rendimiento' }
+      ];
+  const benefits = isEnglish
+    ? ['Integrated high-precision sensors', 'Bluetooth 5.0 connectivity', 'Long-lasting battery (4.5h)', 'IPX7 water resistance', 'Free mobile app included', 'Detailed real-time analysis']
+    : ['Sensores de alta precisión integrados', 'Conectividad Bluetooth 5.0', 'Batería de larga duración (4.5h)', 'Resistencia al agua IPX7', 'App móvil gratuita incluida', 'Análisis detallado en tiempo real'];
   return (
     <div className="home-container">
       {/* Hero Section */}
@@ -13,22 +32,22 @@ const Home = () => {
           <div className="hero-grid">
             <div className="hero-content">
               <h1 className="hero-title">
-                Revoluciona tu
-                <span className="hero-title-accent"> Pádel</span>
+                {isEnglish ? 'Revolutionize your' : 'Revoluciona tu'}
+                <span className="hero-title-accent"> {isEnglish ? 'Padel' : 'Pádel'}</span>
               </h1>
               <p className="hero-description">
-                PadelStats es el sensor inteligente que se coloca en el canto de tu pala para 
-                medir potencia, precisión, efecto y exigencia física. Mejora tu juego con 
-                datos precisos y análisis detallado.
+                {isEnglish
+                  ? 'PadelStats is the smart sensor that attaches to the edge of your racket to measure power, accuracy, spin and physical exertion. Improve your game with precise data and detailed analysis.'
+                  : 'PadelStats es el sensor inteligente que se coloca en el canto de tu pala para medir potencia, precisión, efecto y exigencia física. Mejora tu juego con datos precisos y análisis detallado.'}
               </p>
               <div className="hero-buttons">
                 <Link to="/producto" className="primary-button">
-                  Ver Producto
+                  {isEnglish ? 'View Product' : 'Ver Producto'}
                   <FaArrowRight className="button-icon" />
                 </Link>
                 <button className="secondary-button" onClick={() => setDemoOpen(true)}>
                   <FaPlay className="button-icon-left" />
-                  Ver Demo
+                  {isEnglish ? 'Watch Demo' : 'Ver Demo'}
                 </button>
               </div>
             </div>
@@ -46,13 +65,13 @@ const Home = () => {
                 <div className="floating-stats">
                   <div className="stat-card top-left">
                     <div className="stat-value">95%</div>
-                    <div className="stat-label">Precisión</div>
+                    <div className="stat-label">{isEnglish ? 'Accuracy' : 'Precisión'}</div>
                   </div>
                 </div>
                 <div className="floating-stats">
                   <div className="stat-card bottom-right">
                     <div className="stat-value">4.5h</div>
-                    <div className="stat-label">Batería</div>
+                    <div className="stat-label">{isEnglish ? 'Battery' : 'Batería'}</div>
                   </div>
                 </div>
               </div>
@@ -66,32 +85,15 @@ const Home = () => {
         <div className="features-container">
           <div className="features-header">
             <h2 className="features-title">
-              Características Principales
+              {isEnglish ? 'Key Features' : 'Características Principales'}
             </h2>
             <p className="features-subtitle">
-              Descubre todo lo que PadelStats puede medir y cómo te ayuda a mejorar tu rendimiento
+              {isEnglish ? 'Discover everything PadelStats can measure and how it helps you improve your performance' : 'Descubre todo lo que PadelStats puede medir y cómo te ayuda a mejorar tu rendimiento'}
             </p>
           </div>
 
           <div className="features-grid">
-            {[
-              {
-                title: 'Análisis Técnico',
-                description: 'Analiza todos tus golpes y movimientos en la pista'
-              },
-              {
-                title: 'Medición de Potencia',
-                description: 'Analiza la fuerza y el peso aplicados en cada golpe'
-              },
-              {
-                title: 'Prevención de Lesiones',
-                description: 'Identifica patrones de movimiento lesivos'
-              },
-              {
-                title: 'Exigencia Física',
-                description: 'Controla tu desgaste físico y optimiza tu rendimiento'
-              }
-            ].map((feature, index) => (
+            {features.map((feature, index) => (
               <div key={index} className="feature-card">
                 <h3 className="feature-title">{feature.title}</h3>
                 <p className="feature-description">{feature.description}</p>
@@ -107,23 +109,14 @@ const Home = () => {
           <div className="product-details-grid">
             <div className="product-details-content">
               <h2 className="section-title">
-                La Tecnología más Avanzada
+                {isEnglish ? 'The Most Advanced Technology' : 'La Tecnología más Avanzada'}
               </h2>
               <p className="section-description">
-                PadelStats utiliza sensores de última generación para capturar cada detalle 
-                de tu juego. Desde la velocidad de tu golpe hasta el análisis biomecánico 
-                de tu técnica.
+                {isEnglish ? 'PadelStats uses state-of-the-art sensors to capture every detail of your game, from shot speed to biomechanical analysis of your technique.' : 'PadelStats utiliza sensores de última generación para capturar cada detalle de tu juego. Desde la velocidad de tu golpe hasta el análisis biomecánico de tu técnica.'}
               </p>
               
               <ul className="features-list">
-                {[
-                  'Sensores de alta precisión integrados',
-                  'Conectividad Bluetooth 5.0',
-                  'Batería de larga duración (4.5h)',
-                  'Resistencia al agua IPX7',
-                  'App móvil gratuita incluida',
-                  'Análisis detallado en tiempo real'
-                ].map((feature, index) => (
+                {benefits.map((feature, index) => (
                   <li key={index} className="feature-list-item">
                     <FaCheck className="feature-check" />
                     {feature}
@@ -133,19 +126,19 @@ const Home = () => {
 
               <div className="price-highlight">
                 <div className="price-row">
-                  <span className="price-label">Precio especial:</span>
+                  <span className="price-label">{isEnglish ? 'Special price:' : 'Precio especial:'}</span>
                   <div>
                     <span className="original-price">€84.99</span>
                     <span className="price-value">€59.99</span>
                   </div>
                 </div>
                 <div className="price-row">
-                  <span className="discount-badge">Pack de 4 por €49.99 c/u</span>
+                  <span className="discount-badge">{isEnglish ? 'Pack of 4 for €49.99 each' : 'Pack de 4 por €49.99 c/u'}</span>
                 </div>
               </div>
 
               <Link to="/producto" className="primary-button">
-                Ver Detalles del Producto
+                {isEnglish ? 'View Product Details' : 'Ver Detalles del Producto'}
                 <FaArrowRight className="button-icon" />
               </Link>
             </div>
@@ -162,13 +155,13 @@ const Home = () => {
       <section className="cta-section">
         <div className="cta-container">
           <h2 className="cta-title">
-            ¿Listo para llevar tu pádel al siguiente nivel?
+            {isEnglish ? 'Ready to take your padel to the next level?' : '¿Listo para llevar tu pádel al siguiente nivel?'}
           </h2>
           <p className="cta-subtitle">
-            Únete a miles de jugadores que ya mejoran su rendimiento con PadelStats
+            {isEnglish ? 'Join thousands of players already improving their performance with PadelStats' : 'Únete a miles de jugadores que ya mejoran su rendimiento con PadelStats'}
           </p>
           <Link to="/producto" className="cta-button cta-button--soldout">
-            Producto Agotado
+            {isEnglish ? 'Product Sold Out' : 'Producto Agotado'}
           </Link>
         </div>
       </section>

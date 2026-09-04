@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FaQuestionCircle, FaChevronDown, FaChevronUp, FaMobile, FaBluetooth, FaBatteryFull, FaShieldAlt, FaPaperPlane, FaCheck } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Help.css';
 
 const Help = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,7 +16,16 @@ const Help = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
 
-  const faqs = [
+  const faqs = isEnglish ? [
+    { id: 1, question: 'How do I download the PadelStats app?', answer: 'Download the free PadelStats app from the official stores: Play Store for Android and App Store for iOS. Search for “PadelStats” in your app store. No subscription or additional payment is required.', icon: <FaMobile /> },
+    { id: 2, question: 'How do I connect PadelStats to my phone?', answer: 'Install the app, turn on the sensor by holding its button for three seconds until the blue light flashes, then open the app, tap “Connect Sensor”, select your PadelStats device and confirm pairing. It takes less than one minute.', icon: <FaBluetooth /> },
+    { id: 3, question: 'How long does the PadelStats battery last?', answer: 'The PadelStats battery lasts 4 hours and 30 minutes of continuous use, enough for around three to four full matches. It charges fully in two hours with the included USB-C cable.', icon: <FaBatteryFull /> },
+    { id: 4, question: 'How durable is PadelStats?', answer: 'PadelStats is designed to be highly durable. It has an IPX7 rating for water and sweat resistance, and its reinforced plastic-fiber case withstands strong impacts.', icon: <FaShieldAlt /> },
+    { id: 5, question: 'Does the sensor affect my racket weight or balance?', answer: 'No. PadelStats weighs only 12 grams, less than 3% of a standard racket weight. Its aerodynamic design and edge position do not alter the balance or playing feel.', icon: '⚖️' },
+    { id: 6, question: 'Can I use PadelStats in official competitions?', answer: 'Yes. PadelStats complies with FIP regulations. Its installation does not modify the racket dimensions and it only records data for later analysis.', icon: '🏆' },
+    { id: 7, question: 'What data does the sensor measure?', answer: 'PadelStats records shot speed, impact zone, shot type, spin, power, accuracy and physical demand. All data synchronizes automatically with your profile.', icon: '📊' },
+    { id: 8, question: 'Does the sensor work without an internet connection?', answer: 'Yes. PadelStats works offline during play, stores match data locally and automatically synchronizes it once you are connected again.', icon: '📡' }
+  ] : [
     {
       id: 1,
       question: '¿Cómo descargar la app PadelStats en mi móvil?',
@@ -111,9 +123,9 @@ const Help = () => {
       {/* Header Section */}
       <section className="help-header">
         <div className="help-header-container">
-          <h1 className="help-title">Centro de Ayuda</h1>
+          <h1 className="help-title">{isEnglish ? 'Help Center' : 'Centro de Ayuda'}</h1>
           <p className="help-subtitle">
-            Encuentra respuestas a tus preguntas sobre PadelStats o contáctanos directamente
+            {isEnglish ? 'Find answers to your questions about PadelStats or contact us directly' : 'Encuentra respuestas a tus preguntas sobre PadelStats o contáctanos directamente'}
           </p>
         </div>
       </section>
@@ -125,7 +137,7 @@ const Help = () => {
           <div className="help-sections">
             {/* FAQ Section */}
             <div className="faq-section">
-              <h2 className="section-title">Preguntas Frecuentes</h2>
+              <h2 className="section-title">{isEnglish ? 'Frequently Asked Questions' : 'Preguntas Frecuentes'}</h2>
               <ul className="faq-list">
                 {faqs.map((faq) => (
                   <li key={faq.id} className="faq-item">
@@ -148,19 +160,19 @@ const Help = () => {
 
             {/* Contact Form Section */}
             <div className="contact-section">
-              <h2 className="section-title">Contáctanos</h2>
+              <h2 className="section-title">{isEnglish ? 'Contact Us' : 'Contáctanos'}</h2>
               
               {submissionStatus === 'success' && (
                 <div className="success-message">
                   <FaCheck className="success-icon" />
-                  ¡Mensaje enviado correctamente! Te responderemos pronto.
+                  {isEnglish ? 'Message sent successfully. We will get back to you shortly.' : '¡Mensaje enviado correctamente! Te responderemos pronto.'}
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="contact-form">
                 <div className="form-group">
                   <label htmlFor="name" className="form-label">
-                    Nombre completo *
+                    {isEnglish ? 'Full name *' : 'Nombre completo *'}
                   </label>
                   <input
                     type="text"
@@ -170,7 +182,7 @@ const Help = () => {
                     onChange={handleInputChange}
                     required
                     className="form-input"
-                    placeholder="Tu nombre completo"
+                    placeholder={isEnglish ? 'Your full name' : 'Tu nombre completo'}
                   />
                 </div>
 
@@ -192,7 +204,7 @@ const Help = () => {
 
                 <div className="form-group">
                   <label htmlFor="subject" className="form-label">
-                    Asunto
+                    {isEnglish ? 'Subject' : 'Asunto'}
                   </label>
                   <select
                     id="subject"
@@ -201,17 +213,17 @@ const Help = () => {
                     onChange={handleInputChange}
                     className="form-select"
                   >
-                    <option value="Consulta General">Consulta General</option>
-                    <option value="Soporte Técnico">Soporte Técnico</option>
-                    <option value="Problema con el Producto">Problema con el Producto</option>
-                    <option value="Sugerencia">Sugerencia</option>
-                    <option value="Garantía">Garantía</option>
+                    <option value="Consulta General">{isEnglish ? 'General inquiry' : 'Consulta General'}</option>
+                    <option value="Soporte Técnico">{isEnglish ? 'Technical support' : 'Soporte Técnico'}</option>
+                    <option value="Problema con el Producto">{isEnglish ? 'Product issue' : 'Problema con el Producto'}</option>
+                    <option value="Sugerencia">{isEnglish ? 'Suggestion' : 'Sugerencia'}</option>
+                    <option value="Garantía">{isEnglish ? 'Warranty' : 'Garantía'}</option>
                   </select>
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="message" className="form-label">
-                    Mensaje *
+                    {isEnglish ? 'Message *' : 'Mensaje *'}
                   </label>
                   <textarea
                     id="message"
@@ -220,7 +232,7 @@ const Help = () => {
                     onChange={handleInputChange}
                     required
                     className="form-textarea"
-                    placeholder="Describe tu consulta o problema..."
+                    placeholder={isEnglish ? 'Describe your inquiry or issue...' : 'Describe tu consulta o problema...'}
                     rows="5"
                   />
                 </div>
@@ -233,12 +245,12 @@ const Help = () => {
                   {isLoading ? (
                     <>
                       <div className="loading-spinner"></div>
-                      <span className="loading-text">Enviando...</span>
+                      <span className="loading-text">{isEnglish ? 'Sending...' : 'Enviando...'}</span>
                     </>
                   ) : (
                     <>
                       <FaPaperPlane className="button-icon" />
-                      Enviar Mensaje
+                      {isEnglish ? 'Send Message' : 'Enviar Mensaje'}
                     </>
                   )}
                 </button>
@@ -248,27 +260,27 @@ const Help = () => {
 
           {/* Quick Help Section - Al Final */}
           <div className="quick-help">
-            <h2 className="section-title">Ayuda Rápida</h2>
+            <h2 className="section-title">{isEnglish ? 'Quick Help' : 'Ayuda Rápida'}</h2>
             <div className="quick-help-grid">
               <div className="help-card">
                 <FaMobile className="help-card-icon" />
-                <h3 className="help-card-title">Descarga la App</h3>
+                <h3 className="help-card-title">{isEnglish ? 'Download the App' : 'Descarga la App'}</h3>
                 <p className="help-card-description">
-                  Disponible gratis en Play Store y App Store
+                  {isEnglish ? 'Available free on Play Store and App Store' : 'Disponible gratis en Play Store y App Store'}
                 </p>
               </div>
               <div className="help-card">
                 <FaBluetooth className="help-card-icon" />
-                <h3 className="help-card-title">Conectar Sensor</h3>
+                <h3 className="help-card-title">{isEnglish ? 'Connect Sensor' : 'Conectar Sensor'}</h3>
                 <p className="help-card-description">
-                  Guía paso a paso para emparejar tu dispositivo
+                  {isEnglish ? 'Step-by-step guide to pair your device' : 'Guía paso a paso para emparejar tu dispositivo'}
                 </p>
               </div>
               <div className="help-card">
                 <FaQuestionCircle className="help-card-icon" />
-                <h3 className="help-card-title">Soporte 24/7</h3>
+                <h3 className="help-card-title">{isEnglish ? '24/7 Support' : 'Soporte 24/7'}</h3>
                 <p className="help-card-description">
-                  Estamos aquí para ayudarte en todo momento
+                  {isEnglish ? 'We are here to help whenever you need us' : 'Estamos aquí para ayudarte en todo momento'}
                 </p>
               </div>
             </div>

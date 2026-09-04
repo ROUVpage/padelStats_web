@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { language, changeLanguage } = useLanguage();
+  const labels = language === 'en'
+    ? { home: 'Home', product: 'Product', help: 'Help', soldOut: 'Sold out' }
+    : { home: 'Inicio', product: 'Producto', help: 'Ayuda', soldOut: 'Agotado' };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -33,13 +38,13 @@ const Navbar = () => {
                 to="/"
                 className={`menu-link ${isActive('/') ? 'active' : 'inactive'}`}
               >
-                Inicio
+                {labels.home}
               </Link>
               <Link
                 to="/producto"
                 className={`menu-link ${isActive('/producto') ? 'active' : 'inactive'}`}
               >
-                Producto
+                {labels.product}
               </Link>
               <Link
                 to="/blog"
@@ -54,18 +59,38 @@ const Navbar = () => {
                 to="/ayuda"
                 className={`menu-link ${isActive('/ayuda') ? 'active' : 'inactive'}`}
               >
-                Ayuda
+                {labels.help}
               </Link>
               <span className="cta-button cta-button--soldout">
-                Agotado
+                {labels.soldOut}
               </span>
+              <select
+                className="language-select"
+                value={language}
+                onChange={(event) => changeLanguage(event.target.value)}
+                aria-label="Language"
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+              </select>
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <button onClick={toggleMenu} className="mobile-menu-button">
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </button>
+          <div className="mobile-controls">
+            <select
+              className="language-select"
+              value={language}
+              onChange={(event) => changeLanguage(event.target.value)}
+              aria-label="Language"
+            >
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+            </select>
+            <button onClick={toggleMenu} className="mobile-menu-button" aria-label="Toggle menu">
+              {isOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -76,14 +101,14 @@ const Navbar = () => {
               className={`mobile-menu-link ${isActive('/') ? 'active' : 'inactive'}`}
               onClick={() => setIsOpen(false)}
             >
-              Inicio
+              {labels.home}
             </Link>
             <Link
               to="/producto"
               className={`mobile-menu-link ${isActive('/producto') ? 'active' : 'inactive'}`}
               onClick={() => setIsOpen(false)}
             >
-              Producto
+              {labels.product}
             </Link>
             <Link
               to="/blog"
@@ -100,12 +125,12 @@ const Navbar = () => {
               className={`mobile-menu-link ${isActive('/ayuda') ? 'active' : 'inactive'}`}
               onClick={() => setIsOpen(false)}
             >
-              Ayuda
+              {labels.help}
             </Link>
             <span
               className="mobile-cta-button mobile-cta-button--soldout"
             >
-              Agotado
+              {labels.soldOut}
             </span>
           </div>
         </div>

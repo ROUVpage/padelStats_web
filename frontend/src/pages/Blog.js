@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaCalendar, FaUser, FaEye, FaBookOpen } from 'react-icons/fa';
+import { useLanguage } from '../LanguageContext';
 import './Blog.css';
 
 const Blog = () => {
+  const { language } = useLanguage();
+  const isEnglish = language === 'en';
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const englishPosts = {
+    1: { title: 'How to improve your padel smash technique', excerpt: 'Discover the secrets to performing more effective and powerful padel smashes. We cover the correct technique, common mistakes and exercises to improve your attacking game.', category: 'Technique' },
+    2: { title: 'Data analysis: What is your ideal impact zone?', excerpt: 'With PadelStats, we analyzed thousands of shots to determine the optimal impact zone on your racket and show you how to apply it to your game.', category: 'Analysis' },
+    3: { title: 'The most common padel mistakes according to data', excerpt: 'We analyze data from over 10,000 matches recorded with PadelStats to identify the most frequent technical mistakes and how to correct them.', category: 'Statistics' },
+    4: { title: 'Data-driven training: The padel revolution', excerpt: 'Data-driven training is transforming padel. Discover how smart sensors such as PadelStats are changing the way players train and compete.', category: 'Technology' },
+    5: { title: 'Complete guide: How to connect PadelStats to your phone', excerpt: 'A step-by-step guide to connecting your PadelStats sensor to the mobile app, including solutions for common connection and setup issues.', category: 'Tutorials' },
+    6: { title: 'The future of padel: AI and predictive analytics', excerpt: 'Explore how artificial intelligence and machine learning are applied to padel analysis, enabling performance predictions and tailored advice.', category: 'Research' }
+  };
 
   // Datos de ejemplo para el blog
   const samplePosts = [
@@ -86,7 +97,7 @@ const Blog = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+    return new Date(dateString).toLocaleDateString(isEnglish ? 'en-GB' : 'es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -95,22 +106,27 @@ const Blog = () => {
 
   const BlogPostCard = ({ post }) => (
     <Link to={`/blog/${post.slug}`} className="blog-card">
+      {(() => {
+        const localizedPost = isEnglish ? { ...post, ...englishPosts[post.id] } : post;
+        return <>
       <div className="blog-image">
-        {post.featured_image
-          ? <img src={post.featured_image} alt={post.title} />
-          : <span className="blog-image-placeholder">Imagen del artículo</span>
+        {localizedPost.featured_image
+          ? <img src={localizedPost.featured_image} alt={localizedPost.title} />
+          : <span className="blog-image-placeholder">{isEnglish ? 'Article image' : 'Imagen del artículo'}</span>
         }
       </div>
       
       <div className="blog-content">
         <div className="blog-meta">
-          <span className="blog-date">{formatDate(post.created_at)}</span>
-          <span className="blog-category">{post.category}</span>
+          <span className="blog-date">{formatDate(localizedPost.created_at)}</span>
+          <span className="blog-category">{localizedPost.category}</span>
         </div>
 
-        <h3 className="blog-card-title">{post.title}</h3>
-        <p className="blog-excerpt">{post.excerpt}</p>
+        <h3 className="blog-card-title">{localizedPost.title}</h3>
+        <p className="blog-excerpt">{localizedPost.excerpt}</p>
       </div>
+        </>;
+      })()}
     </Link>
   );
 
@@ -120,7 +136,7 @@ const Blog = () => {
         <div className="loading-container">
           <div className="loading-spinner"></div>
         </div>
-        <div className="loading-text">Cargando artículos...</div>
+        <div className="loading-text">{isEnglish ? 'Loading articles...' : 'Cargando artículos...'}</div>
       </div>
     );
   }
@@ -130,10 +146,9 @@ const Blog = () => {
       {/* Header Section */}
       <section className="blog-header">
         <div className="blog-header-container">
-          <h1 className="blog-title">Blog PadelStats</h1>
+          <h1 className="blog-title">{isEnglish ? 'PadelStats Blog' : 'Blog PadelStats'}</h1>
           <p className="blog-subtitle">
-            Descubre los últimos consejos, análisis técnicos y novedades sobre 
-            el mundo del pádel y la tecnología deportiva
+            {isEnglish ? 'Discover the latest tips, technical analysis and news from the world of padel and sports technology' : 'Descubre los últimos consejos, análisis técnicos y novedades sobre el mundo del pádel y la tecnología deportiva'}
           </p>
         </div>
       </section>
@@ -150,9 +165,9 @@ const Blog = () => {
           ) : (
             <div className="empty-state">
               <FaBookOpen className="empty-icon" />
-              <h3 className="empty-title">No hay artículos disponibles</h3>
+              <h3 className="empty-title">{isEnglish ? 'No articles available' : 'No hay artículos disponibles'}</h3>
               <p className="empty-description">
-                Estamos trabajando en nuevos contenidos. ¡Vuelve pronto!
+                {isEnglish ? 'We are working on new content. Come back soon!' : 'Estamos trabajando en nuevos contenidos. ¡Vuelve pronto!'}
               </p>
             </div>
           )}
